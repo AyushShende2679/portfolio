@@ -1,0 +1,777 @@
+/* ADD THIS AT THE VERY TOP OF style.css */
+html {
+  background-color: #050505; /* Prevents the white flash */
+  width: 100%;
+  height: 100%;
+}
+
+/* KEEP YOUR EXISTING BODY RULE, BUT ENSURE IT LOOKS LIKE THIS: */
+body {
+  background-color: transparent; /* Allows video to show through */
+  color: var(--text);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  overflow-x: hidden;
+  position: relative;
+  min-height: 100vh;
+}
+:root {
+  --bg: #0a0a0a;
+  --soft: #121212;
+  --card: #1a1a1a;
+  --text: #eaeaea;
+  --muted: #9a9a9a;
+  --accent: #7c7cff;
+  --accent-dim: rgba(124, 124, 255, 0.1);
+  --gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: transparent; /* Now the "wall" is glass, and we can see the video */
+  color: var(--text);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* =========================================
+   FIXED: WATER + BACKGROUND LAYERS
+   ========================================= */
+
+/* 1. The Dynamic Photos (Bottom Layer) */
+.bg-layer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -3; /* Furthest back */
+  opacity: 0;
+  transform: scale(1);
+  transition: opacity 1.5s ease-in-out, transform 15s ease-in-out; 
+  background-size: cover;
+  background-position: center;
+  pointer-events: none;
+}
+
+/* RESTORED: The Star Field Pattern */
+.star-field {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+      radial-gradient(white 1px, transparent 1px),
+      radial-gradient(white 1px, transparent 1px);
+  background-size: 50px 50px;
+  background-position: 0 0, 25px 25px;
+  opacity: 0.1; /* Subtle stars */
+  z-index: -2;
+}
+
+/* NEW: Hero Background Image */
+.hero-bg {
+  background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.9)), url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop');
+}
+
+/* Show hero background by default or when active */
+body:not([data-section]), /* If no section is set yet */
+body[data-section="hero"] .hero-bg {
+  opacity: 1;
+  transform: scale(1.05);
+}
+
+/* Define your background images here */
+.about-bg {
+  background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.9)), url('https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=2072&auto=format&fit=crop');
+}
+.skills-bg {
+  background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.9)), url('https://images.unsplash.com/photo-1620233317289-5c035358aa8a?q=80&w=870&auto=format&fit=crop');
+}
+.projects-bg {
+  background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.9)), url('https://images.unsplash.com/photo-1497032628192-86f99bcd76bc?q=80&w=870&auto=format&fit=crop');
+}
+
+/* Show specific background based on scroll */
+body[data-section="about"] .about-bg,
+body[data-section="skills"] .skills-bg,
+body[data-section="projects"] .projects-bg {
+  opacity: 1;
+  transform: scale(1.1); /* Slow zoom effect */
+}
+
+/* 2. The Water Canvas (Middle Layer) */
+#liquid-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1; /* On top of photos, behind text */
+  pointer-events: none;
+  
+  /* THIS IS THE FIX: makes black transparent so photos show through */
+  mix-blend-mode: screen; 
+  opacity: 0.8; 
+}
+
+/* 3. Star Field (Optional Overlay) */
+.bg-animation {
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  z-index: -2;
+}
+
+/* =========================================
+   NAVIGATION & HEADER
+   ========================================= */
+.container {
+  max-width: 1200px;
+  margin: auto;
+  padding: 0 24px;
+}
+
+nav {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  z-index: 1000;
+  transition: all 0.4s ease;
+  background: transparent;
+}
+
+nav.scrolled {
+  background: rgba(10, 10, 10, 0.8);
+  backdrop-filter: blur(12px);
+  height: 70px;
+  border-bottom: 1px solid rgba(124, 124, 255, 0.1);
+}
+
+nav .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: 800;
+  text-decoration: none;
+  background: var(--gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.nav-links {
+  display: flex;
+  gap: 32px;
+  list-style: none;
+}
+
+.nav-links a {
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 500;
+  padding: 8px 16px;
+  border-radius: 20px;
+  transition: all 0.3s ease;
+}
+
+.nav-links a:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 0 15px rgba(124, 124, 255, 0.2);
+}
+
+.hamburger {
+  display: none;
+  cursor: pointer;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.bar {
+  width: 25px;
+  height: 3px;
+  background-color: var(--text);
+  border-radius: 2px;
+  transition: all 0.3s ease;
+}
+
+/* =========================================
+   HERO & CONTENT
+   ========================================= */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  padding-top: 80px;
+}
+
+.hero h1 {
+  font-size: clamp(3rem, 8vw, 5rem);
+  font-weight: 700;
+  margin-bottom: 24px;
+  background: linear-gradient(120deg, var(--text) 20%, var(--accent) 50%, var(--text) 80%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shine 6s linear infinite;
+}
+
+@keyframes shine { to { background-position: 200% center; } }
+
+.hero p {
+  font-size: 1.4rem;
+  max-width: 700px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.hero span {
+  color: var(--text);
+  position: relative;
+}
+
+.hero span::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--accent);
+}
+
+/* =========================================
+   UPDATED BUTTON STYLES (Paste this into style.css)
+   ========================================= */
+
+.cta-buttons {
+  display: flex;
+  gap: 20px; /* Increased gap slightly for breathing room */
+  margin-top: 40px;
+}
+
+.btn {
+  padding: 16px 36px; /* Slightly larger touch target */
+  border-radius: 50px;
+  font-size: 1rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); /* Smoother springy easing */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden; /* Keeps the shine effects inside the button */
+  z-index: 1;
+  letter-spacing: 0.5px;
+}
+
+/* --- PRIMARY BUTTON (View Projects) --- 
+   Adds a moving gradient and a shiny glass reflection effect */
+.btn-primary {
+  background: var(--gradient);
+  background-size: 200% auto; /* Allows the gradient to move */
+  color: white;
+  box-shadow: 0 10px 30px rgba(124, 124, 255, 0.3); /* Stronger initial glow */
+}
+
+.btn-primary:hover {
+  background-position: right center; /* Moves gradient on hover */
+  transform: translateY(-4px) scale(1.02); /* Lifts up */
+  box-shadow: 0 20px 40px rgba(124, 124, 255, 0.5); /* Stronger glow on hover */
+}
+
+/* The "Shine" Sweep Animation */
+.btn-primary::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.4),
+    transparent
+  );
+  transform: skewX(-20deg);
+  transition: 0.5s;
+  z-index: -1;
+}
+
+.btn-primary:hover::after {
+  left: 120%; /* Sweeps the shine across the button */
+  transition: 0.7s ease-in-out;
+}
+
+/* --- SECONDARY BUTTON (Get in Touch) --- 
+   Adds a "fill up" liquid animation */
+.btn-secondary {
+  background: transparent;
+  color: var(--accent); /* Text starts as accent color */
+  border: 2px solid var(--accent);
+  box-shadow: 0 0 15px rgba(124, 124, 255, 0.1);
+}
+
+/* The Fill Layer */
+.btn-secondary::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0%;
+  height: 100%;
+  background: var(--accent);
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  z-index: -1; /* Puts it behind the text */
+}
+
+.btn-secondary:hover {
+  color: white; /* Text turns white */
+  box-shadow: 0 0 25px var(--accent); /* Neon Glow */
+  border-color: var(--accent);
+  transform: translateY(-4px);
+}
+
+.btn-secondary:hover::before {
+  width: 100%; /* Fills the button */
+}
+
+/* --- CLICK EFFECT (Tactile Feedback) --- */
+.btn:active {
+  transform: scale(0.95) translateY(0) !important;
+  box-shadow: 0 5px 15px rgba(124, 124, 255, 0.3);
+}
+
+.section { padding: 120px 0; position: relative; z-index: 1; }
+.section-header { text-align: center; margin-bottom: 80px; }
+.section-header h2 {
+  font-size: clamp(2.5rem, 5vw, 3.5rem);
+  margin-bottom: 16px;
+  background: var(--gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.section-header p { color: var(--muted); font-size: 1.1rem; }
+
+.about-glass-box {
+  background: rgba(20, 20, 20, 0.5); /* More transparent so background shows */
+  backdrop-filter: blur(8px);
+  padding: 40px;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  max-width: 850px;
+  margin: 0 auto;
+}
+.about-content { font-size: 1.15rem; line-height: 1.8; color: var(--muted); text-align: center; }
+
+.skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; }
+.skill-card {
+  background: rgba(26, 26, 26, 0.6);
+  padding: 32px; border-radius: 24px; border: 1px solid rgba(255, 255, 255, 0.05);
+  position: relative; overflow: hidden; transition: transform 0.1s ease-out; transform-style: preserve-3d;
+}
+.skill-card::after {
+  content: ""; position: absolute; top: 0; left: 0; right: 0; bottom: 0; border-radius: inherit;
+  background: radial-gradient(600px circle at var(--mouse-x) var(--mouse-y), rgba(124, 124, 255, 0.15), transparent 40%);
+  z-index: 1; opacity: 0; transition: opacity 0.5s; pointer-events: none;
+}
+.skill-card:hover::after { opacity: 1; }
+.skill-card:hover { transform: translateY(-8px); border-color: var(--accent); box-shadow: 0 20px 40px rgba(124, 124, 255, 0.2); }
+.skill-card h3 { font-size: 1.4rem; margin-bottom: 16px; color: var(--text); position: relative; z-index: 2; }
+.skill-card p { color: var(--muted); margin-bottom: 8px; font-size: 1rem; position: relative; z-index: 2; }
+.skill-card span { font-size: 0.9rem; color: #777; position: relative; z-index: 2; }
+
+.project-card { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; margin-bottom: 100px; align-items: center; opacity: 0; transform: translateY(40px); transition: all 0.6s; }
+.project-card.visible { opacity: 1; transform: translateY(0); }
+.project-card:nth-child(even) { direction: rtl; }
+.project-card:nth-child(even) > * { direction: ltr; }
+.project-info h3 { font-size: 2rem; margin-bottom: 16px; color: var(--text); }
+.project-info p { color: var(--muted); margin: 20px 0; line-height: 1.7; font-size: 1.05rem; }
+.tags { display: flex; flex-wrap: wrap; gap: 8px; margin: 24px 0; }
+.tags span { padding: 8px 16px; border-radius: 20px; background: var(--accent-dim); color: var(--accent); font-size: 0.9rem; font-weight: 500; border: 1px solid rgba(124, 124, 255, 0.2); }
+.project-link { display: inline-flex; align-items: center; gap: 8px; color: var(--accent); text-decoration: none; font-weight: 600; margin-top: 16px; transition: gap 0.3s; }
+.project-link:hover { gap: 12px; }
+
+.phone-frame {
+  position: relative; max-width: 520px; margin: 0 auto; background: linear-gradient(145deg, #1a1a1a, #0f0f0f); padding: 14px; border-radius: 40px;
+  transform-style: preserve-3d; animation: levitate 6s ease-in-out infinite; box-shadow: 0 30px 60px rgba(0,0,0,0.5), inset 0 0 0 2px rgba(255,255,255,0.1);
+}
+@keyframes levitate { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
+
+.carousel-wrapper { position: relative; height: 520px; border-radius: 28px; overflow: hidden; background: #000; }
+.carousel-image { width: 100%; height: 100%; object-fit: contain; background: #000; }
+.carousel-image.hidden { display: none; }
+
+.nav {
+  position: absolute; top: 50%; transform: translateY(-50%); background: rgba(20, 20, 20, 0.6); backdrop-filter: blur(8px);
+  border: 1px solid rgba(124, 124, 255, 0.3); color: var(--accent); width: 48px; height: 48px; border-radius: 50%;
+  cursor: pointer; font-size: 20px; display: flex; align-items: center; justify-content: center; z-index: 50;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+/* FIX: Pause animation on hover so you can click easily */
+.nav:hover {
+  background: var(--accent);
+  color: white;
+  border-color: var(--accent);
+  box-shadow: 0 0 20px rgba(124, 124, 255, 0.6);
+  
+  /* Force the button to stop moving and scale up */
+  animation-play-state: paused !important; 
+  transform: translateY(-50%) scale(1.15) !important;
+}
+.prev { left: -70px; animation: floatLeft 3s ease-in-out infinite; }
+.next { right: -70px; animation: floatRight 3s ease-in-out infinite; }
+@keyframes floatLeft { 0%, 100% { transform: translateY(-50%) translateX(0); } 50% { transform: translateY(-50%) translateX(-6px); } }
+@keyframes floatRight { 0%, 100% { transform: translateY(-50%) translateX(0); } 50% { transform: translateY(-50%) translateX(6px); } }
+
+.carousel-dots { display: flex; justify-content: center; gap: 8px; margin-top: 16px; }
+.dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255, 255, 255, 0.3); cursor: pointer; transition: all 0.3s; }
+.dot.active { background: var(--accent); width: 24px; border-radius: 4px; }
+
+.web-preview { width: 100%; border-radius: 20px; box-shadow: 0 20px 60px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.05); transition: transform 0.3s; }
+.web-preview:hover { transform: scale(1.02); }
+
+.contact-section { padding-bottom: 120px; }
+.contact-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; max-width: 1000px; margin: 0 auto; }
+.contact-card {
+  background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.05); padding: 40px 20px; border-radius: 24px;
+  text-align: center; text-decoration: none; position: relative; overflow: hidden; transition: transform 0.1s ease-out; transform-style: preserve-3d;
+  cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; backdrop-filter: blur(10px);
+}
+.contact-card::after {
+  content: ""; position: absolute; top: 0; left: 0; right: 0; bottom: 0; border-radius: inherit;
+  background: radial-gradient(600px circle at var(--mouse-x) var(--mouse-y), rgba(124, 124, 255, 0.15), transparent 40%);
+  z-index: 1; opacity: 0; transition: opacity 0.5s; pointer-events: none;
+}
+.contact-card:hover::after { opacity: 1; }
+.contact-card h3 { color: var(--text); font-size: 1.2rem; margin: 15px 0 8px 0; position: relative; z-index: 2; }
+.contact-card p { color: var(--muted); font-size: 0.9rem; transition: color 0.3s; position: relative; z-index: 2; }
+.icon-box { font-size: 2.5rem; margin-bottom: 10px; transition: transform 0.4s ease; position: relative; z-index: 2; }
+.email-card:hover { border-color: #ea4335; box-shadow: 0 10px 40px -10px rgba(234, 67, 53, 0.3); }
+.email-card:hover .icon-box { color: #ea4335; transform: scale(1.1) rotate(10deg); }
+.linkedin-card:hover { border-color: #0077b5; box-shadow: 0 10px 40px -10px rgba(0, 119, 181, 0.3); }
+.linkedin-card:hover .icon-box { color: #0077b5; transform: scale(1.1) rotate(-10deg); }
+.github-card:hover { border-color: #8e44ad; box-shadow: 0 10px 40px -10px rgba(142, 68, 173, 0.3); }
+.github-card:hover .icon-box { color: #fff; transform: scale(1.1); }
+
+.main-footer { background: #050505; border-top: 1px solid rgba(255, 255, 255, 0.05); padding: 50px 0 30px; position: relative; z-index: 10; }
+.footer-content { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+.footer-logo { font-size: 1.5rem; font-weight: 700; background: var(--gradient); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+.footer-socials { display: flex; gap: 20px; }
+.footer-socials a {
+  color: var(--muted); font-size: 1.2rem; transition: all 0.3s ease; width: 40px; height: 40px; border-radius: 50%; background: rgba(255, 255, 255, 0.05);
+  display: flex; align-items: center; justify-content: center; text-decoration: none;
+}
+.footer-socials a:hover { background: var(--accent); color: white; transform: translateY(-3px); box-shadow: 0 5px 15px rgba(124, 124, 255, 0.3); }
+.footer-bottom { text-align: center; padding-top: 20px; border-top: 1px solid rgba(255, 255, 255, 0.03); color: #666; font-size: 0.9rem; }
+
+@media (max-width: 768px) {
+  .hamburger { display: flex; }
+  .nav-links {
+    position: fixed; top: 80px; right: -100%; width: 70%; height: calc(100vh - 80px);
+    background: rgba(10, 10, 10, 0.95); backdrop-filter: blur(10px); flex-direction: column;
+    align-items: center; justify-content: flex-start; padding-top: 60px; transition: right 0.4s ease;
+    border-left: 1px solid rgba(255, 255, 255, 0.05);
+  }
+  .nav-links.active { right: 0; }
+  .nav-links li { margin: 20px 0; }
+  .hamburger.active .bar:nth-child(1) { transform: rotate(-45deg) translate(-5px, 6px); }
+  .hamburger.active .bar:nth-child(2) { opacity: 0; }
+  .hamburger.active .bar:nth-child(3) { transform: rotate(45deg) translate(-5px, -6px); }
+  .project-card { grid-template-columns: 1fr; gap: 40px; }
+  .phone-frame { max-width: 360px; animation: none; }
+  .carousel-wrapper { height: 520px; }
+  .cta-buttons { flex-direction: column; }
+  .contact-grid { grid-template-columns: 1fr; gap: 20px; }
+  .contact-card { padding: 30px; }
+  .footer-content { flex-direction: column; gap: 20px; }
+}
+/* =========================================
+   NEW: CUSTOM CURSOR (Cyber Precision)
+   ========================================= */
+
+/* 1. Default Cursor: A precision crosshair ring */
+html, body {
+  cursor: url('data:image/svg+xml;utf8,<svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><circle cx="16" cy="16" r="8" stroke="%237c7cff" stroke-width="1.5" fill="none" opacity="0.8"/><circle cx="16" cy="16" r="2" fill="%23ffffff"/></svg>') 16 16, auto;
+}
+
+/* 2. Hover Cursor: A filled glowing orb */
+a, button, .btn, .nav, .project-link, .contact-card, .skill-card {
+  cursor: url('data:image/svg+xml;utf8,<svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><circle cx="16" cy="16" r="8" fill="%237c7cff" fill-opacity="0.4" stroke="%237c7cff" stroke-width="1.5"/><circle cx="16" cy="16" r="3" fill="white"/></svg>') 16 16, pointer;
+}
+
+/* =========================================
+   NEW: FLUID MAGNETIC CURSOR
+   ========================================= */
+
+/* Only enable custom cursor on devices with a mouse */
+@media (pointer: fine) {
+  
+  /* Hide the default cursor */
+  body, a, button, input, textarea, .nav, .project-link {
+    cursor: none !important;
+  }
+
+  /* 1. The Small Center Dot */
+  .cursor-dot {
+    width: 8px;
+    height: 8px;
+    background-color: white;
+    position: fixed;
+    top: 0;
+    left: 0;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    z-index: 9999;
+    pointer-events: none; /* Let clicks pass through */
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+  }
+
+  /* 2. The Trailing Ring */
+  .cursor-outline {
+    width: 40px;
+    height: 40px;
+    border: 2px solid var(--accent); /* Your Purple Color */
+    position: fixed;
+    top: 0;
+    left: 0;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    z-index: 9998;
+    pointer-events: none;
+    transition: width 0.2s, height 0.2s, background-color 0.2s; /* Smooth morphing */
+    mix-blend-mode: exclusion; /* Cool color inversion effect on text */
+  }
+
+  /* 3. Hover State (When you touch a link/button) */
+  body.hovering .cursor-outline {
+    width: 70px; /* Expands */
+    height: 70px;
+    background-color: rgba(124, 124, 255, 0.1); /* Slight fill */
+    border-color: transparent; /* Border disappears */
+    backdrop-filter: blur(2px);
+  }
+  
+  body.hovering .cursor-dot {
+    opacity: 0; /* Hide the dot so you see the content clearly */
+  }
+}
+/* =========================================
+   NEW: PRELOADER & ANIMATIONS
+   ========================================= */
+
+/* Body Scroll Lock */
+body.no-scroll {
+  overflow: hidden;
+}
+
+/* Preloader Container */
+#preloader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #050505;
+  z-index: 99999; /* Highest priority */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: opacity 0.8s ease-in-out, visibility 0.8s ease-in-out;
+}
+
+#preloader.fade-out {
+  opacity: 0;
+  visibility: hidden;
+}
+
+/* Preloader Content */
+.loader-content {
+  text-align: center;
+  z-index: 2;
+  position: relative;
+}
+
+/* Shimmering Logo */
+.loader-logo {
+  font-size: 4rem;
+  font-weight: 900;
+  margin-bottom: 30px;
+  background: linear-gradient(
+    110deg, 
+    var(--accent) 20%, 
+    #ffffff 50%, 
+    var(--accent) 80%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer 2s linear infinite;
+}
+
+@keyframes shimmer {
+  to {
+    background-position: 200% center;
+  }
+}
+
+/* Loading Bar Container */
+.loading-bar-container {
+  width: 200px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  overflow: hidden;
+  margin: 0 auto;
+  position: relative;
+}
+
+/* The Animated Bar */
+.loading-bar {
+  width: 0%;
+  height: 100%;
+  background: var(--gradient);
+  box-shadow: 0 0 15px var(--accent);
+  border-radius: 4px;
+  animation: loadProgress 2.3s cubic-bezier(0.83, 0, 0.17, 1) forwards;
+}
+
+@keyframes loadProgress {
+  0% { width: 0%; }
+  40% { width: 40%; }
+  80% { width: 85%; }
+  100% { width: 100%; }
+}
+
+/* Floating Particles */
+#loader-particles {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.particle {
+  position: absolute;
+  background: var(--accent);
+  border-radius: 50%;
+  opacity: 0.5;
+  animation: floatUp linear infinite;
+}
+
+@keyframes floatUp {
+  0% {
+    transform: translateY(100vh) scale(0);
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.7;
+    transform: translateY(80vh) scale(1);
+  }
+  80% {
+    opacity: 0.7;
+    transform: translateY(20vh) scale(1);
+  }
+  100% {
+    transform: translateY(-10vh) scale(0);
+    opacity: 0;
+  }
+}
+
+/* =========================================
+   NEW: NAVBAR & LOGO INTERACTIONS
+   ========================================= */
+
+/* Navbar Slide Down Animation */
+.nav-hidden {
+  transform: translateY(-100%);
+}
+
+#navbar {
+  transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1), background 0.4s ease;
+}
+
+/* Logo Rotation on Hover */
+nav .logo {
+  display: inline-block; /* Required for transform */
+  transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+nav .logo:hover {
+  transform: rotate(360deg) scale(1.1);
+}
+/* FIX: Correct video stacking */
+.hero-video {
+  z-index: -2; /* Above bg-layer images, below canvas & stars */
+}
+/* =========================================
+   ULTIMATE VIDEO FIX
+   ========================================= */
+
+/* 1. The Container: Sits behind everything */
+.video-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -10; /* Deepest layer */
+  pointer-events: none;
+  overflow: hidden;
+  background: #050505; /* Fallback color */
+}
+
+/* 2. The Video: Fills the screen */
+.video-container video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 1;
+  transition: opacity 1s ease;
+}
+
+/* 3. The Overlay: Darkens video so text pops */
+.video-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(5, 5, 5, 0.6); /* Adjust transparency here (0.6 is good) */
+  z-index: 1;
+}
+
+/* 4. Logic: Hide video when scrolling to other sections */
+body[data-section="about"] .video-container video,
+body[data-section="skills"] .video-container video,
+body[data-section="projects"] .video-container video {
+  opacity: 0; /* Fades out video so your static images can show */
+}

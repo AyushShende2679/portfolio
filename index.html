@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ayush Shende | Portfolio</title>
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="video-container">
+    <video autoplay muted loop playsinline>
+      <source src="images/Background-video.mp4" type="video/mp4">
+    </video>
+    <div class="video-overlay"></div>
+  </div>
+
+  <div id="preloader">
+    <div id="loader-particles"></div>
+    
+    <div class="loader-content">
+      <div class="loader-logo">AS</div>
+      
+      <div class="loading-bar-container">
+        <div class="loading-bar"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cursor-dot" data-cursor-dot></div>
+  <div class="cursor-outline" data-cursor-outline></div>
+  
+  <canvas id="liquid-canvas"></canvas>
+
+  <div class="bg-animation">
+    <div class="star-field"></div>
+  </div>
+
+  <div class="bg-layer about-bg"></div>
+  <div class="bg-layer skills-bg"></div>
+  <div class="bg-layer projects-bg"></div>
+
+  <nav id="navbar" class="nav-hidden">
+    <div class="container">
+      <a href="#" class="logo">AS</a>
+      
+      <ul class="nav-links">
+        <li><a href="#about">About</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+
+      <div class="hamburger">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </div>
+    </div>
+  </nav>
+
+  <section class="hero" id="hero">
+    <div class="container">
+      <div class="hero-content">
+        <h1>Ayush Shende</h1>
+        <p>
+          Computer Science Engineering student focused on building
+          <span>real-world mobile & web applications</span>.
+        </p>
+        
+        <div class="cta-buttons">
+          <a href="#projects" class="btn btn-primary">View Projects</a>
+          
+          <a href="Ayush_Shende_Resume(public).pdf" target="_blank" class="btn btn-secondary">
+            My Resume
+          </a>
+        </div>
+        
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="about">
+    <div class="container">
+      <div class="section-header">
+        <h2>About Me</h2>
+        <p>Building solutions that matter</p>
+      </div>
+      <div class="about-glass-box">
+        <p class="about-content">
+          I am a 2nd-year B.Tech Computer Science and Engineering student at Jhulelal Institute of Technology,
+          graduating in 2028. I build practical applications using Flutter and modern web technologies,
+          with a strong focus on problem-solving and system fundamentals. My passion lies in creating
+          intuitive user experiences and solving real-world problems through code.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="skills">
+    <div class="container">
+      <div class="section-header">
+        <h2>Skills & Technologies</h2>
+        <p>Tools I use to bring ideas to life</p>
+      </div>
+
+      <div class="skills-grid">
+        <div class="skill-card">
+          <h3>Languages</h3>
+          <p>C, C++, JavaScript, Dart</p>
+          <span>Java (learning)</span>
+        </div>
+
+        <div class="skill-card">
+          <h3>Frontend & App</h3>
+          <p>HTML, CSS, Flutter</p>
+        </div>
+
+        <div class="skill-card">
+          <h3>Backend & Tools</h3>
+          <p>Node.js, Express, Firebase</p>
+          <span>Git & GitHub</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="projects">
+    <div class="container">
+      <div class="section-header">
+        <h2>Featured Projects</h2>
+        <p>Some things I've built</p>
+      </div>
+
+      <div class="project-card">
+        <div class="project-info">
+          <h3>Splitmate</h3>
+          <p>
+            Expense tracking mobile application designed to simplify personal and shared finances.
+            Automatically calculates balances, visualizes monthly spending with interactive charts,
+            and generates comprehensive PDF reports for easy tracking.
+          </p>
+
+          <div class="tags">
+            <span>Flutter</span>
+            <span>Dart</span>
+            <span>Firebase</span>
+          </div>
+
+          <a href="https://github.com/AyushShende2679/splitmate" target="_blank" class="project-link">
+            View on GitHub →
+          </a>
+        </div>
+
+        <div class="phone-frame">
+          <button class="nav prev">‹</button>
+          
+          <div class="carousel-wrapper">
+            <img src="https://i.postimg.cc/MHy12NNT/splitmate1.png" class="carousel-image" alt="Splitmate Home"/>
+            <img src="https://i.postimg.cc/1R6GqVtN/splitmate2.png" class="carousel-image hidden" alt="Splitmate Groups"/>
+            <img src="https://i.postimg.cc/mkQ7fJJZ/splitmate3.png" class="carousel-image hidden" alt="Splitmate Reports"/>
+          </div>
+          
+          <button class="nav next">›</button>
+
+          <div class="carousel-dots">
+            <div class="dot active" data-index="0"></div>
+            <div class="dot" data-index="1"></div>
+            <div class="dot" data-index="2"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-info">
+          <h3>VoiceFlow</h3>
+          <p>
+            A comprehensive text-to-speech web application that converts user input into natural-sounding
+            spoken audio across multiple languages. Features include speech-to-text transcription and
+            translation capabilities, improving accessibility and content consumption.
+          </p>
+
+          <div class="tags">
+            <span>HTML</span>
+            <span>CSS</span>
+            <span>JavaScript</span>
+            <span>Node.js</span>
+          </div>
+
+          <a href="https://github.com/AyushShende2679/VoiceFlow" target="_blank" class="project-link">
+            View on GitHub →
+          </a>
+        </div>
+
+        <img src="https://i.postimg.cc/wBPP4RDy/voiceflow.png" class="web-preview" alt="VoiceFlow Preview"/>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="section contact-section" id="contact">
+    <div class="container">
+      <div class="section-header">
+        <h2>Let's Connect</h2>
+        <p>Ready to start a project?</p>
+      </div>
+      
+      <div class="contact-grid">
+        <a href="mailto:ayushshende2679@gmail.com" class="contact-card email-card">
+          <div class="icon-box">
+            <i class="fa-solid fa-envelope"></i>
+          </div>
+          <h3>Email Me</h3>
+          <p>ayushshende2679@gmail.com</p>
+        </a>
+
+        <a href="https://www.linkedin.com/in/ayush-shende-874b70292?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank" class="contact-card linkedin-card">
+          <div class="icon-box">
+            <i class="fa-brands fa-linkedin-in"></i>
+          </div>
+          <h3>LinkedIn</h3>
+          <p>Let's connect professionally</p>
+        </a>
+
+        <a href="https://github.com/AyushShende2679" target="_blank" class="contact-card github-card">
+          <div class="icon-box">
+            <i class="fa-brands fa-github"></i>
+          </div>
+          <h3>GitHub</h3>
+          <p>Check out my code</p>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="main-footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-logo">AS</div>
+        <div class="footer-socials">
+          <a href="https://github.com/AyushShende2679" target="_blank"><i class="fa-brands fa-github"></i></a>
+          <a href="https://www.linkedin.com/in/ayush-shende-874b70292" target="_blank"><i class="fa-brands fa-linkedin-in"></i></a>
+          <a href="mailto:ayushshende2679@gmail.com"><i class="fa-solid fa-envelope"></i></a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2026 Ayush Shende. Built with <span style="color: #e25555;">&hearts;</span> and Code.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
