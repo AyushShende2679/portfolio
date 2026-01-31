@@ -1,6 +1,3 @@
-/* =========================================
-   1. CAROUSEL LOGIC (ROBUST VERSION)
-   ========================================= */
 const images = document.querySelectorAll(".carousel-image");
 const prev = document.querySelector(".prev");
 const next = document.querySelector(".next");
@@ -9,20 +6,20 @@ const dots = document.querySelectorAll(".dot");
 let current = 0;
 
 function updateCarousel() {
-  // Safety check: if no images, stop.
+
   if (images.length === 0) return;
 
   images.forEach(img => img.classList.add("hidden"));
   images[current].classList.remove("hidden");
   
   dots.forEach(dot => dot.classList.remove("active"));
-  // Safety check: ensure dot exists before styling
+ 
   if(dots[current]) {
     dots[current].classList.add("active");
   }
 }
 
-// Only attach listeners if buttons exist
+
 if (prev) {
   prev.onclick = () => {
     if (images.length > 0) {
@@ -48,20 +45,17 @@ dots.forEach((dot, index) => {
   };
 });
 
-/* =========================================
-   2. NAVBAR & MOBILE MENU LOGIC (NEW)
-   ========================================= */
+
 const hamburger = document.querySelector(".hamburger");
 const navLinks = document.querySelector(".nav-links");
 const navbar = document.getElementById("navbar");
 
-// Toggle Mobile Menu
 hamburger.addEventListener("click", () => {
   hamburger.classList.toggle("active");
   navLinks.classList.toggle("active");
 });
 
-// Close mobile menu when clicking a link
+
 document.querySelectorAll(".nav-links a").forEach(link => {
   link.addEventListener("click", () => {
     hamburger.classList.remove("active");
@@ -69,7 +63,6 @@ document.querySelectorAll(".nav-links a").forEach(link => {
   });
 });
 
-// Navbar Scroll Effect
 window.addEventListener("scroll", () => {
   if (window.scrollY > 50) {
     navbar.classList.add("scrolled");
@@ -78,9 +71,7 @@ window.addEventListener("scroll", () => {
   }
 });
 
-/* =========================================
-   3. SMOOTH SCROLL & OBSERVER (UNCHANGED)
-   ========================================= */
+
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
   anchor.addEventListener('click', function (e) {
     e.preventDefault();
@@ -103,9 +94,6 @@ document.querySelectorAll('.project-card').forEach(card => {
   observer.observe(card);
 });
 
-/* =========================================
-   4. DYNAMIC BACKGROUND (UNCHANGED)
-   ========================================= */
 const sections = document.querySelectorAll("section");
 const body = document.body;
 
@@ -124,9 +112,7 @@ sections.forEach((section) => {
   scrollObserver.observe(section);
 });
 
-/* =========================================
-   5. 3D TILT & SPOTLIGHT EFFECT (UNCHANGED)
-   ========================================= */
+
 const tiltCards = document.querySelectorAll('.skill-card, .contact-card, .project-info');
 
 tiltCards.forEach(card => {
@@ -150,23 +136,21 @@ tiltCards.forEach(card => {
     card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale3d(1, 1, 1)';
   });
 });
-/* =========================================
-   WEBGL FLUID SIMULATION (WATER EFFECT)
-   ========================================= */
+
 const canvas = document.getElementById('liquid-canvas');
 const gl = canvas.getContext('webgl');
 
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
-// Config for the fluid look - Tweak these to change viscosity
+
 const config = {
     TEXTURE_DOWNSAMPLE: 1,
-    DENSITY_DISSIPATION: 0.98, // How fast the water calms down
+    DENSITY_DISSIPATION: 0.98, 
     VELOCITY_DISSIPATION: 0.99,
     PRESSURE_DISSIPATION: 0.8,
     PRESSURE_ITERATIONS: 25,
-    CURL: 30, // How much it swirls
+    CURL: 30, 
     SPLAT_RADIUS: 0.005
 };
 
@@ -175,8 +159,7 @@ let splatStack = [];
 
 const { drawingBufferWidth: width, drawingBufferHeight: height } = gl;
 
-// --- SHADER SOURCES ---
-// Basic vertex shader
+
 const baseVertexShader = `
     attribute vec2 aPosition;
     varying vec2 vUv;
@@ -186,7 +169,7 @@ const baseVertexShader = `
     }
 `;
 
-// Clear shader
+
 const clearShader = `
     precision mediump float;
     varying vec2 vUv;
@@ -197,7 +180,7 @@ const clearShader = `
     }
 `;
 
-// Splat shader (creates the ink/water input)
+
 const splatShader = `
     precision highp float;
     precision highp sampler2D;
@@ -216,7 +199,7 @@ const splatShader = `
     }
 `;
 
-// Advection (moves the fluid)
+
 const advectionShader = `
     precision highp float;
     precision highp sampler2D;
@@ -232,7 +215,6 @@ const advectionShader = `
     }
 `;
 
-// Divergence (calculates pressure)
 const divergenceShader = `
     precision mediump float;
     precision mediump sampler2D;
@@ -257,7 +239,6 @@ const divergenceShader = `
     }
 `;
 
-// Curl (adds swirls)
 const curlShader = `
     precision mediump float;
     precision mediump sampler2D;
@@ -277,7 +258,7 @@ const curlShader = `
     }
 `;
 
-// Vorticity (applies swirls)
+
 const vorticityShader = `
     precision highp float;
     precision highp sampler2D;
@@ -305,7 +286,7 @@ const vorticityShader = `
     }
 `;
 
-// Pressure shader
+
 const pressureShader = `
     precision mediump float;
     precision mediump sampler2D;
@@ -328,7 +309,6 @@ const pressureShader = `
     }
 `;
 
-// Gradient Subtract (Apply pressure to velocity)
 const gradientSubtractShader = `
     precision mediump float;
     precision mediump sampler2D;
@@ -350,7 +330,7 @@ const gradientSubtractShader = `
     }
 `;
 
-// Helper Functions
+
 function compileShader(type, source) {
     const shader = gl.createShader(type);
     gl.shaderSource(shader, source);
@@ -376,7 +356,6 @@ function createProgram(vsSource, fsSource) {
 
 let texelSize = { x: 1 / width, y: 1 / height };
 
-// Initialize Programs
 const clearProgram = createProgram(baseVertexShader, clearShader);
 const splatProgram = createProgram(baseVertexShader, splatShader);
 const advectionProgram = createProgram(baseVertexShader, advectionShader);
@@ -386,7 +365,6 @@ const vorticityProgram = createProgram(baseVertexShader, vorticityShader);
 const pressureProgram = createProgram(baseVertexShader, pressureShader);
 const gradSubtractProgram = createProgram(baseVertexShader, gradientSubtractShader);
 
-// Create Framebuffers
 function createFBO(w, h) {
     gl.activeTexture(gl.TEXTURE0);
     const texture = gl.createTexture();
@@ -395,7 +373,7 @@ function createFBO(w, h) {
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, w, h, 0, gl.RGBA, gl.HALF_FLOAT_OES, null); // Use Float if possible
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, w, h, 0, gl.RGBA, gl.HALF_FLOAT_OES, null);
 
     const fbo = gl.createFramebuffer();
     gl.bindFramebuffer(gl.FRAMEBUFFER, fbo);
@@ -404,14 +382,14 @@ function createFBO(w, h) {
     return { texture, fbo, width: w, height: h, attach(id) { gl.activeTexture(gl.TEXTURE0 + id); gl.bindTexture(gl.TEXTURE_2D, texture); return id; } };
 }
 
-// Double buffering for physics
+
 let density = createFBO(width, height);
 let velocity = createFBO(width, height);
 let divergence = createFBO(width, height);
 let curl = createFBO(width, height);
 let pressure = createFBO(width, height);
 
-// Render Quad
+
 const blit = (() => {
     gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, -1, 1, 1, 1, 1, -1]), gl.STATIC_DRAW);
@@ -425,22 +403,21 @@ const blit = (() => {
     }
 })();
 
-// Main Loop
+
 let lastTime = Date.now();
 function update() {
     const dt = Math.min((Date.now() - lastTime) / 1000, 0.016);
     lastTime = Date.now();
     
-    // Advection (Move velocity)
+    
     gl.useProgram(advectionProgram);
     gl.uniform1f(gl.getUniformLocation(advectionProgram, 'dt'), dt);
     gl.uniform1f(gl.getUniformLocation(advectionProgram, 'dissipation'), config.VELOCITY_DISSIPATION);
     velocity.attach(0);
     gl.uniform1i(gl.getUniformLocation(advectionProgram, 'uVelocity'), 0);
     gl.uniform1i(gl.getUniformLocation(advectionProgram, 'uSource'), 0);
-    blit(velocity); // Swap buffers roughly implemented for brevity
+    blit(velocity); 
 
-    // Advection (Move density/color)
     gl.useProgram(advectionProgram);
     gl.uniform1f(gl.getUniformLocation(advectionProgram, 'dissipation'), config.DENSITY_DISSIPATION);
     velocity.attach(0);
@@ -449,7 +426,7 @@ function update() {
     gl.uniform1i(gl.getUniformLocation(advectionProgram, 'uSource'), 1);
     blit(density);
 
-    // Add mouse splats
+   
     if (pointers.length > 0) {
         gl.useProgram(splatProgram);
         gl.uniform1i(gl.getUniformLocation(splatProgram, 'uTarget'), 0);
@@ -459,23 +436,22 @@ function update() {
             const p = pointers[i];
             velocity.attach(0);
             gl.uniform2f(gl.getUniformLocation(splatProgram, 'point'), p.x, p.y);
-            gl.uniform3f(gl.getUniformLocation(splatProgram, 'color'), p.dx * 10, p.dy * 10, 1.0); // Velocity affects color
+            gl.uniform3f(gl.getUniformLocation(splatProgram, 'color'), p.dx * 10, p.dy * 10, 1.0); 
             gl.uniform1f(gl.getUniformLocation(splatProgram, 'radius'), config.SPLAT_RADIUS);
             blit(velocity);
             
             density.attach(0);
-            // YOUR ACCENT COLOR HERE: Purple (0.5, 0.0, 1.0) mixed with Blue
+           
             gl.uniform3f(gl.getUniformLocation(splatProgram, 'color'), 0.2, 0.2, 1.0); 
             blit(density);
         }
-        pointers = []; // Clear for next frame
+        pointers = []; 
     }
 
-    // Render to screen
-    // Simple display shader just drawing the density
+   
     gl.bindFramebuffer(gl.FRAMEBUFFER, null);
     density.attach(0);
-    gl.useProgram(clearProgram); // Reusing clear shader as a simple pass-through
+    gl.useProgram(clearProgram); 
     gl.uniform1i(gl.getUniformLocation(clearProgram, 'uTexture'), 0);
     gl.uniform1f(gl.getUniformLocation(clearProgram, 'value'), 1.0);
     blit(null);
@@ -483,11 +459,10 @@ function update() {
     requestAnimationFrame(update);
 }
 
-// Mouse Events
 canvas.addEventListener('mousemove', e => {
     pointers.push({
         x: e.clientX / canvas.width,
-        y: 1.0 - e.clientY / canvas.height, // WebGL Y is inverted
+        y: 1.0 - e.clientY / canvas.height, 
         dx: e.movementX,
         dy: -e.movementY
     });
@@ -495,32 +470,25 @@ canvas.addEventListener('mousemove', e => {
 
 update();
 
-/* =========================================
-   FLUID MAGNETIC CURSOR LOGIC
-   ========================================= */
+
 const cursorDot = document.querySelector("[data-cursor-dot]");
 const cursorOutline = document.querySelector("[data-cursor-outline]");
 
-// Only run on desktop
 if (window.matchMedia("(pointer: fine)").matches) {
 
   window.addEventListener("mousemove", function (e) {
     const posX = e.clientX;
     const posY = e.clientY;
 
-    // 1. The Dot moves instantly
     cursorDot.style.left = `${posX}px`;
     cursorDot.style.top = `${posY}px`;
 
-    // 2. The Outline moves with a slight delay (Animation)
     cursorOutline.animate({
       left: `${posX}px`,
       top: `${posY}px`
-    }, { duration: 500, fill: "forwards" }); // 500ms lag = Fluid feel
-  });
+    }, { duration: 500, fill: "forwards" }); 
+  }); 
 
-  // 3. Hover Effects (Magnetism)
-  // Select everything interactive
   const interactiveElements = document.querySelectorAll("a, button, .nav, .project-card, input, textarea");
 
   interactiveElements.forEach(el => {
@@ -533,29 +501,23 @@ if (window.matchMedia("(pointer: fine)").matches) {
   });
 }
 
-/* =========================================
-   6. PRELOADER & PARTICLES LOGIC (NEW)
-   ========================================= */
-
 document.addEventListener("DOMContentLoaded", () => {
   const preloader = document.getElementById("preloader");
   const navbar = document.getElementById("navbar");
   const particleContainer = document.getElementById("loader-particles");
   
-  // 1. Lock Scroll on Load
+
   document.body.classList.add("no-scroll");
 
-  // 2. Create Floating Particles
-  const particleCount = 30; // Number of particles
+  const particleCount = 30; 
 
   for (let i = 0; i < particleCount; i++) {
     const particle = document.createElement("div");
     particle.classList.add("particle");
     
-    // Random Positioning & Sizing
-    const size = Math.random() * 5 + 2 + "px"; // 2px to 7px
+    const size = Math.random() * 5 + 2 + "px"; 
     const left = Math.random() * 100 + "%";
-    const duration = Math.random() * 2 + 2 + "s"; // 2s to 4s
+    const duration = Math.random() * 2 + 2 + "s"; 
     const delay = Math.random() * 2 + "s";
     
     particle.style.width = size;
@@ -567,18 +529,17 @@ document.addEventListener("DOMContentLoaded", () => {
     particleContainer.appendChild(particle);
   }
 
-  // 3. Handle Sequence (2.3 Seconds)
+
   setTimeout(() => {
-    // Fade out preloader
+  
     preloader.classList.add("fade-out");
     
-    // Unlock Scroll
+   
     document.body.classList.remove("no-scroll");
     
-    // Slide Down Navbar
     navbar.classList.remove("nav-hidden");
 
-    // Optional: Remove preloader from DOM after fade transition (0.8s) to save resources
+  
     setTimeout(() => {
         preloader.style.display = 'none';
     }, 800);

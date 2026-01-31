@@ -1,19 +1,18 @@
-/* ADD THIS AT THE VERY TOP OF style.css */
 html {
-  background-color: #050505; /* Prevents the white flash */
+  background-color: #050505; 
   width: 100%;
   height: 100%;
 }
 
-/* KEEP YOUR EXISTING BODY RULE, BUT ENSURE IT LOOKS LIKE THIS: */
 body {
-  background-color: transparent; /* Allows video to show through */
+  background-color: transparent; 
   color: var(--text);
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   overflow-x: hidden;
   position: relative;
   min-height: 100vh;
 }
+
 :root {
   --bg: #0a0a0a;
   --soft: #121212;
@@ -32,25 +31,20 @@ body {
 }
 
 body {
-  background-color: transparent; /* Now the "wall" is glass, and we can see the video */
+  background-color: transparent; 
   color: var(--text);
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   overflow-x: hidden;
   position: relative;
 }
 
-/* =========================================
-   FIXED: WATER + BACKGROUND LAYERS
-   ========================================= */
-
-/* 1. The Dynamic Photos (Bottom Layer) */
 .bg-layer {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: -3; /* Furthest back */
+  z-index: -3; 
   opacity: 0;
   transform: scale(1);
   transition: opacity 1.5s ease-in-out, transform 15s ease-in-out; 
@@ -59,7 +53,6 @@ body {
   pointer-events: none;
 }
 
-/* RESTORED: The Star Field Pattern */
 .star-field {
   position: absolute;
   top: 0;
@@ -71,23 +64,20 @@ body {
       radial-gradient(white 1px, transparent 1px);
   background-size: 50px 50px;
   background-position: 0 0, 25px 25px;
-  opacity: 0.1; /* Subtle stars */
+  opacity: 0.1; 
   z-index: -2;
 }
 
-/* NEW: Hero Background Image */
 .hero-bg {
   background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.9)), url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop');
 }
 
-/* Show hero background by default or when active */
-body:not([data-section]), /* If no section is set yet */
+body:not([data-section]),
 body[data-section="hero"] .hero-bg {
   opacity: 1;
   transform: scale(1.05);
 }
 
-/* Define your background images here */
 .about-bg {
   background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.9)), url('https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=2072&auto=format&fit=crop');
 }
@@ -98,39 +88,31 @@ body[data-section="hero"] .hero-bg {
   background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.9)), url('https://images.unsplash.com/photo-1497032628192-86f99bcd76bc?q=80&w=870&auto=format&fit=crop');
 }
 
-/* Show specific background based on scroll */
 body[data-section="about"] .about-bg,
 body[data-section="skills"] .skills-bg,
 body[data-section="projects"] .projects-bg {
   opacity: 1;
-  transform: scale(1.1); /* Slow zoom effect */
+  transform: scale(1.1);
 }
 
-/* 2. The Water Canvas (Middle Layer) */
 #liquid-canvas {
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  z-index: -1; /* On top of photos, behind text */
+  z-index: -1; 
   pointer-events: none;
-  
-  /* THIS IS THE FIX: makes black transparent so photos show through */
   mix-blend-mode: screen; 
   opacity: 0.8; 
 }
 
-/* 3. Star Field (Optional Overlay) */
 .bg-animation {
   position: fixed;
   top: 0; left: 0; width: 100%; height: 100%;
   z-index: -2;
 }
 
-/* =========================================
-   NAVIGATION & HEADER
-   ========================================= */
 .container {
   max-width: 1200px;
   margin: auto;
@@ -150,10 +132,10 @@ nav {
 }
 
 nav.scrolled {
-  background: rgba(10, 10, 10, 0.8);
-  backdrop-filter: blur(12px);
+  background: rgba(5, 5, 5, 0.95);
   height: 70px;
-  border-bottom: 1px solid rgba(124, 124, 255, 0.1);
+  border-bottom: 1px solid rgba(124, 124, 255, 0.2);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
 }
 
 nav .container {
@@ -210,9 +192,6 @@ nav .container {
   transition: all 0.3s ease;
 }
 
-/* =========================================
-   HERO & CONTENT
-   ========================================= */
 .hero {
   min-height: 100vh;
   display: flex;
@@ -262,50 +241,43 @@ nav .container {
   background: var(--accent);
 }
 
-/* =========================================
-   UPDATED BUTTON STYLES (Paste this into style.css)
-   ========================================= */
-
 .cta-buttons {
   display: flex;
-  gap: 20px; /* Increased gap slightly for breathing room */
+  gap: 20px;
   margin-top: 40px;
 }
 
 .btn {
-  padding: 16px 36px; /* Slightly larger touch target */
+  padding: 16px 36px;
   border-radius: 50px;
   font-size: 1rem;
   font-weight: 600;
   text-decoration: none;
-  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); /* Smoother springy easing */
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
   display: inline-flex;
   align-items: center;
   justify-content: center;
   border: none;
   cursor: pointer;
   position: relative;
-  overflow: hidden; /* Keeps the shine effects inside the button */
+  overflow: hidden;
   z-index: 1;
   letter-spacing: 0.5px;
 }
 
-/* --- PRIMARY BUTTON (View Projects) --- 
-   Adds a moving gradient and a shiny glass reflection effect */
 .btn-primary {
   background: var(--gradient);
-  background-size: 200% auto; /* Allows the gradient to move */
+  background-size: 200% auto;
   color: white;
-  box-shadow: 0 10px 30px rgba(124, 124, 255, 0.3); /* Stronger initial glow */
+  box-shadow: 0 10px 30px rgba(124, 124, 255, 0.3);
 }
 
 .btn-primary:hover {
-  background-position: right center; /* Moves gradient on hover */
-  transform: translateY(-4px) scale(1.02); /* Lifts up */
-  box-shadow: 0 20px 40px rgba(124, 124, 255, 0.5); /* Stronger glow on hover */
+  background-position: right center;
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 20px 40px rgba(124, 124, 255, 0.5);
 }
 
-/* The "Shine" Sweep Animation */
 .btn-primary::after {
   content: '';
   position: absolute;
@@ -325,20 +297,17 @@ nav .container {
 }
 
 .btn-primary:hover::after {
-  left: 120%; /* Sweeps the shine across the button */
+  left: 120%;
   transition: 0.7s ease-in-out;
 }
 
-/* --- SECONDARY BUTTON (Get in Touch) --- 
-   Adds a "fill up" liquid animation */
 .btn-secondary {
   background: transparent;
-  color: var(--accent); /* Text starts as accent color */
+  color: var(--accent);
   border: 2px solid var(--accent);
   box-shadow: 0 0 15px rgba(124, 124, 255, 0.1);
 }
 
-/* The Fill Layer */
 .btn-secondary::before {
   content: '';
   position: absolute;
@@ -348,21 +317,20 @@ nav .container {
   height: 100%;
   background: var(--accent);
   transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-  z-index: -1; /* Puts it behind the text */
+  z-index: -1;
 }
 
 .btn-secondary:hover {
-  color: white; /* Text turns white */
-  box-shadow: 0 0 25px var(--accent); /* Neon Glow */
+  color: white;
+  box-shadow: 0 0 25px var(--accent);
   border-color: var(--accent);
   transform: translateY(-4px);
 }
 
 .btn-secondary:hover::before {
-  width: 100%; /* Fills the button */
+  width: 100%;
 }
 
-/* --- CLICK EFFECT (Tactile Feedback) --- */
 .btn:active {
   transform: scale(0.95) translateY(0) !important;
   box-shadow: 0 5px 15px rgba(124, 124, 255, 0.3);
@@ -381,13 +349,22 @@ nav .container {
 .section-header p { color: var(--muted); font-size: 1.1rem; }
 
 .about-glass-box {
-  background: rgba(20, 20, 20, 0.5); /* More transparent so background shows */
-  backdrop-filter: blur(8px);
+  background: linear-gradient(145deg, rgba(20, 20, 20, 0.95), rgba(10, 10, 10, 0.98));
   padding: 40px;
   border-radius: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(124, 124, 255, 0.15);
   max-width: 850px;
   margin: 0 auto;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  position: relative;
+  z-index: 2;
+}
+
+.about-glass-box:hover {
+  transform: translateY(-6px);
+  border-color: var(--accent);
+  box-shadow: 0 20px 50px rgba(124, 124, 255, 0.15);
 }
 .about-content { font-size: 1.15rem; line-height: 1.8; color: var(--muted); text-align: center; }
 
@@ -435,14 +412,12 @@ nav .container {
   cursor: pointer; font-size: 20px; display: flex; align-items: center; justify-content: center; z-index: 50;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
-/* FIX: Pause animation on hover so you can click easily */
+
 .nav:hover {
   background: var(--accent);
   color: white;
   border-color: var(--accent);
   box-shadow: 0 0 20px rgba(124, 124, 255, 0.6);
-  
-  /* Force the button to stop moving and scale up */
   animation-play-state: paused !important; 
   transform: translateY(-50%) scale(1.15) !important;
 }
@@ -461,9 +436,21 @@ nav .container {
 .contact-section { padding-bottom: 120px; }
 .contact-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; max-width: 1000px; margin: 0 auto; }
 .contact-card {
-  background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.05); padding: 40px 20px; border-radius: 24px;
-  text-align: center; text-decoration: none; position: relative; overflow: hidden; transition: transform 0.1s ease-out; transform-style: preserve-3d;
-  cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; backdrop-filter: blur(10px);
+  background: rgba(15, 15, 15, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 40px 20px;
+  border-radius: 24px;
+  text-align: center;
+  text-decoration: none;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+  transform-style: preserve-3d;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 .contact-card::after {
   content: ""; position: absolute; top: 0; left: 0; right: 0; bottom: 0; border-radius: inherit;
@@ -513,33 +500,22 @@ nav .container {
   .contact-card { padding: 30px; }
   .footer-content { flex-direction: column; gap: 20px; }
 }
-/* =========================================
-   NEW: CUSTOM CURSOR (Cyber Precision)
-   ========================================= */
 
-/* 1. Default Cursor: A precision crosshair ring */
 html, body {
   cursor: url('data:image/svg+xml;utf8,<svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><circle cx="16" cy="16" r="8" stroke="%237c7cff" stroke-width="1.5" fill="none" opacity="0.8"/><circle cx="16" cy="16" r="2" fill="%23ffffff"/></svg>') 16 16, auto;
 }
 
-/* 2. Hover Cursor: A filled glowing orb */
 a, button, .btn, .nav, .project-link, .contact-card, .skill-card {
   cursor: url('data:image/svg+xml;utf8,<svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><circle cx="16" cy="16" r="8" fill="%237c7cff" fill-opacity="0.4" stroke="%237c7cff" stroke-width="1.5"/><circle cx="16" cy="16" r="3" fill="white"/></svg>') 16 16, pointer;
 }
 
-/* =========================================
-   NEW: FLUID MAGNETIC CURSOR
-   ========================================= */
 
-/* Only enable custom cursor on devices with a mouse */
 @media (pointer: fine) {
   
-  /* Hide the default cursor */
   body, a, button, input, textarea, .nav, .project-link {
     cursor: none !important;
   }
 
-  /* 1. The Small Center Dot */
   .cursor-dot {
     width: 8px;
     height: 8px;
@@ -550,15 +526,15 @@ a, button, .btn, .nav, .project-link, .contact-card, .skill-card {
     transform: translate(-50%, -50%);
     border-radius: 50%;
     z-index: 9999;
-    pointer-events: none; /* Let clicks pass through */
+    pointer-events: none; 
     box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+    transition: opacity 0.2s; 
   }
 
-  /* 2. The Trailing Ring */
   .cursor-outline {
     width: 40px;
     height: 40px;
-    border: 2px solid var(--accent); /* Your Purple Color */
+    border: 2px solid rgba(124, 124, 255, 0.5); 
     position: fixed;
     top: 0;
     left: 0;
@@ -566,33 +542,33 @@ a, button, .btn, .nav, .project-link, .contact-card, .skill-card {
     border-radius: 50%;
     z-index: 9998;
     pointer-events: none;
-    transition: width 0.2s, height 0.2s, background-color 0.2s; /* Smooth morphing */
-    mix-blend-mode: exclusion; /* Cool color inversion effect on text */
+    transition: width 0.2s cubic-bezier(0.25, 1, 0.5, 1), 
+                height 0.2s cubic-bezier(0.25, 1, 0.5, 1), 
+                background-color 0.2s,
+                border-color 0.2s,
+                box-shadow 0.2s;
+    mix-blend-mode: normal; 
   }
 
-  /* 3. Hover State (When you touch a link/button) */
   body.hovering .cursor-outline {
-    width: 70px; /* Expands */
-    height: 70px;
-    background-color: rgba(124, 124, 255, 0.1); /* Slight fill */
-    border-color: transparent; /* Border disappears */
-    backdrop-filter: blur(2px);
+    width: 60px; 
+    height: 60px;
+    background-color: rgba(124, 124, 255, 0.03); 
+    border-color: var(--accent); 
+    box-shadow: 0 0 20px rgba(124, 124, 255, 0.6), 
+                0 0 40px rgba(124, 124, 255, 0.2); 
   }
   
   body.hovering .cursor-dot {
-    opacity: 0; /* Hide the dot so you see the content clearly */
+    opacity: 0; 
   }
 }
-/* =========================================
-   NEW: PRELOADER & ANIMATIONS
-   ========================================= */
 
-/* Body Scroll Lock */
+
 body.no-scroll {
   overflow: hidden;
 }
 
-/* Preloader Container */
 #preloader {
   position: fixed;
   top: 0;
@@ -600,7 +576,7 @@ body.no-scroll {
   width: 100%;
   height: 100%;
   background-color: #050505;
-  z-index: 99999; /* Highest priority */
+  z-index: 99999;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -612,14 +588,12 @@ body.no-scroll {
   visibility: hidden;
 }
 
-/* Preloader Content */
 .loader-content {
   text-align: center;
   z-index: 2;
   position: relative;
 }
 
-/* Shimmering Logo */
 .loader-logo {
   font-size: 4rem;
   font-weight: 900;
@@ -643,7 +617,6 @@ body.no-scroll {
   }
 }
 
-/* Loading Bar Container */
 .loading-bar-container {
   width: 200px;
   height: 4px;
@@ -654,7 +627,6 @@ body.no-scroll {
   position: relative;
 }
 
-/* The Animated Bar */
 .loading-bar {
   width: 0%;
   height: 100%;
@@ -671,7 +643,6 @@ body.no-scroll {
   100% { width: 100%; }
 }
 
-/* Floating Particles */
 #loader-particles {
   position: absolute;
   width: 100%;
@@ -706,11 +677,6 @@ body.no-scroll {
   }
 }
 
-/* =========================================
-   NEW: NAVBAR & LOGO INTERACTIONS
-   ========================================= */
-
-/* Navbar Slide Down Animation */
 .nav-hidden {
   transform: translateY(-100%);
 }
@@ -719,37 +685,31 @@ body.no-scroll {
   transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1), background 0.4s ease;
 }
 
-/* Logo Rotation on Hover */
 nav .logo {
-  display: inline-block; /* Required for transform */
+  display: inline-block;
   transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 nav .logo:hover {
   transform: rotate(360deg) scale(1.1);
 }
-/* FIX: Correct video stacking */
-.hero-video {
-  z-index: -2; /* Above bg-layer images, below canvas & stars */
-}
-/* =========================================
-   ULTIMATE VIDEO FIX
-   ========================================= */
 
-/* 1. The Container: Sits behind everything */
+.hero-video {
+  z-index: -2;
+}
+
 .video-container {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: -10; /* Deepest layer */
+  z-index: -10;
   pointer-events: none;
   overflow: hidden;
-  background: #050505; /* Fallback color */
+  background: #050505;
 }
 
-/* 2. The Video: Fills the screen */
 .video-container video {
   width: 100%;
   height: 100%;
@@ -758,20 +718,18 @@ nav .logo:hover {
   transition: opacity 1s ease;
 }
 
-/* 3. The Overlay: Darkens video so text pops */
 .video-overlay {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(5, 5, 5, 0.6); /* Adjust transparency here (0.6 is good) */
+  background: rgba(5, 5, 5, 0.6);
   z-index: 1;
 }
 
-/* 4. Logic: Hide video when scrolling to other sections */
 body[data-section="about"] .video-container video,
 body[data-section="skills"] .video-container video,
 body[data-section="projects"] .video-container video {
-  opacity: 0; /* Fades out video so your static images can show */
+  opacity: 0;
 }
