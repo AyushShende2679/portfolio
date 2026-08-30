@@ -1,6 +1,12 @@
 # 🚀 Ayush Shende — Software Engineer Portfolio
 
-![Portfolio Preview](images/ayush-photo.jpg) <!-- Optionally replace with a full screenshot of the hero section -->
+<div align="center">
+  <img src="https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white" />
+  <img src="https://img.shields.io/badge/Spring_Boot-6DB33F?style=for-the-badge&logo=spring-boot&logoColor=white" />
+  <img src="https://img.shields.io/badge/C%2B%2B-00599C?style=for-the-badge&logo=c%2B%2B&logoColor=white" />
+  <img src="https://img.shields.io/badge/Flutter-02569B?style=for-the-badge&logo=flutter&logoColor=white" />
+  <img src="https://img.shields.io/badge/Three.js-000000?style=for-the-badge&logo=threedotjs&logoColor=white" />
+</div>
 
 A highly interactive, spatial, and weightless personal portfolio built using **HTML, CSS, JavaScript**, and **Three.js**. Designed with an "Antigravity" aesthetic, this portfolio features a custom WebGL 3D particle wave background, glassmorphism UI components, and a local offline AI assistant.
 
