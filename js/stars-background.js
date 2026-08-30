@@ -1,18 +1,17 @@
-// stars-background.js — vanilla port of provided React StarBackground
-// "use client" React code converted to vanilla Three.js for movement test
-// Remove when user says — just comment <canvas id="stars-canvas"> and this script in index.html
-import * as THREE from 'three';
+// stars-background.js — vanilla Three.js star field (uses global THREE)
 
-const canvas = document.getElementById('stars-canvas');
-if (!canvas) {
+(function() {
+
+var starsCanvas = document.getElementById('stars-canvas');
+if (!starsCanvas) {
   console.warn('[stars] canvas not found');
 } else {
-  const isMobile = /iPhone|iPad|Android/i.test(navigator.userAgent) || window.innerWidth < 769;
+  var isMobile = /iPhone|iPad|Android/i.test(navigator.userAgent) || window.innerWidth < 769;
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 100);
   camera.position.set(0, 0, 1);
 
-  const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: !isMobile });
+  const renderer = new THREE.WebGLRenderer({ canvas: starsCanvas, alpha: true, antialias: !isMobile });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, isMobile ? 1 : 1.6));
   renderer.setClearColor(0x000000, 0);
 
@@ -25,12 +24,11 @@ if (!canvas) {
   window.addEventListener('resize', resize);
   resize();
 
-  // maath/random inSphere — 5000 points, radius 1.2
-  const COUNT = 5000;
+  // 5000 points in a sphere
+  const COUNT = isMobile ? 2000 : 5000;
   const positions = new Float32Array(COUNT * 3);
   const radius = 1.2;
   for (let i = 0; i < COUNT; i++) {
-    // uniform in sphere
     let x, y, z, r2;
     do {
       x = Math.random() * 2 - 1;
@@ -38,10 +36,9 @@ if (!canvas) {
       z = Math.random() * 2 - 1;
       r2 = x * x + y * y + z * z;
     } while (r2 > 1);
-    // scale to radius with cubic root for uniform
     const r = Math.cbrt(Math.random()) * radius;
     const scale = r / Math.sqrt(r2);
-    positions[i * 3] = x * scale;
+    positions[i * 3]     = x * scale;
     positions[i * 3 + 1] = y * scale;
     positions[i * 3 + 2] = z * scale;
   }
@@ -53,24 +50,24 @@ if (!canvas) {
     color: 0xffffff,
     size: 0.002,
     transparent: true,
-    opacity: 0.92,
+    opacity: 0.75,
     sizeAttenuation: true,
     depthWrite: false,
   });
 
-  const points = new THREE.Points(geo, mat);
+  const pts   = new THREE.Points(geo, mat);
   const group = new THREE.Group();
   group.rotation.set(0, 0, Math.PI / 4);
-  group.add(points);
+  group.add(pts);
   scene.add(group);
 
-  let last = performance.now();
-  let raf = null;
-  let paused = false;
+  let last   = performance.now();
+  let rafId2 = null;
+  let paused2 = false;
 
   function frame(now) {
-    raf = requestAnimationFrame(frame);
-    if (paused || document.hidden) return;
+    rafId2 = requestAnimationFrame(frame);
+    if (paused2 || document.hidden) return;
     const delta = Math.min(0.05, (now - last) / 1000);
     last = now;
     group.rotation.x -= delta / 10;
@@ -78,7 +75,6 @@ if (!canvas) {
     const sc = window.scrollY / (document.body.scrollHeight - window.innerHeight || 1);
     group.position.y = -sc * 0.12;
     group.rotation.z = Math.PI / 4 + sc * 0.08;
-    // small→big with scroll (like next page)
     const sScale = 0.72 + sc * 0.52;
     group.scale.set(sScale, sScale, sScale);
     renderer.render(scene, camera);
@@ -86,11 +82,11 @@ if (!canvas) {
   frame(performance.now());
 
   document.addEventListener('visibilitychange', () => {
-    paused = document.hidden;
-    if (!paused && !raf) frame(performance.now());
+    paused2 = document.hidden;
+    if (!paused2 && !rafId2) frame(performance.now());
   });
 
-  // expose for removal
-  window.__starsBG = { scene, camera, renderer, group, pause: () => (paused = true), resume: () => (paused = false) };
-  console.log('[stars] 5000-point sphere active — comment canvas+script to remove');
+  window.__starsBG = { scene, camera, renderer, group };
 }
+
+})(); // end IIFE

@@ -4,147 +4,65 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Ayush Shende — Software Engineer | Systems • Backend • Mobile</title>
-  <meta name="description" content="Ayush Shende — Computer Science @ JIT Nagpur (CGPA 8.95). Java • Spring Boot • C++17 • Flutter. Building UPI Offline Mesh, DPI Engine, Splitmate."/>
+  <meta name="description" content="Ayush Shende — B.Tech CSE @ JIT Nagpur (CGPA 8.95). Java • Spring Boot • C++17 • Flutter. Building UPI Offline Mesh, DPI Engine, Splitmate. Open to SDE internships."/>
+  <meta name="author" content="Ayush Shende"/>
+  <meta name="robots" content="index, follow"/>
+
+  <!-- Open Graph -->
+  <meta property="og:type"        content="website"/>
+  <meta property="og:url"         content="https://ayushshende2679.github.io/"/>
+  <meta property="og:title"       content="Ayush Shende — Software Engineer"/>
+  <meta property="og:description" content="B.Tech CSE (CGPA 8.95). Java • Spring Boot • C++17 • Flutter. Building encrypted backends, DPI engines, and offline-first apps."/>
+  <meta property="og:image"       content="images/ayush-photo.jpg"/>
+  <meta name="twitter:card"       content="summary_large_image"/>
+  <meta name="twitter:title"      content="Ayush Shende — Software Engineer"/>
+  <meta name="twitter:description" content="B.Tech CSE (CGPA 8.95). Java • Spring Boot • C++17 • Flutter."/>
+  <meta name="twitter:image"      content="images/ayush-photo.jpg"/>
+
+  <!-- Favicon (inline SVG as data URI) -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23050507'/><text y='72' x='50' text-anchor='middle' font-size='62' font-family='Inter,sans-serif' font-weight='900' fill='%237c7cff'>AS</text></svg>"/>
+
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="style.css">
-  <script type="importmap">
-    {
-      "imports": {
-        "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
-        "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
-      }
-    }
-  </script>
-  <script type="module" src="https://unpkg.com/@splinetool/viewer@1.9.59/build/spline-viewer.js" async></script>
+
+  <!-- Three.js global (works on file:// without CORS issues) -->
+  <script src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
+
 </head>
 <body>
-  <!-- VIDEO COMMENTED FOR CHECK — UNCOMMENT TO RESTORE -->
-  <!--
-  <div class="video-container" aria-hidden="true">
-    <video autoplay muted loop playsinline poster="">
-      <source src="images/Background-video.mp4" type="video/mp4">
-    </video>
-    <div class="video-overlay"></div>
-  </div>
-  -->
 
+  <!-- ═══════════════════════ PRELOADER ═══════════════════════════ -->
   <div id="preloader">
     <div id="loader-particles"></div>
     <div class="loader-content">
-      <div class="main-container chip-integrated">
-        <div class="loader">
-          <svg viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <linearGradient id="chipGradient" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stop-color="#2d2d2d"></stop>
-                <stop offset="100%" stop-color="#0f0f0f"></stop>
-              </linearGradient>
-              <linearGradient id="textGradient" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stop-color="#eeeeee"></stop>
-                <stop offset="100%" stop-color="#888888"></stop>
-              </linearGradient>
-            <linearGradient id="pinGradient" x1="1" y1="0" x2="0" y2="0">
-              <stop offset="0%" stop-color="#bbbbbb"></stop>
-              <stop offset="50%" stop-color="#888888"></stop>
-              <stop offset="100%" stop-color="#555555"></stop>
-            </linearGradient>
-            <radialGradient id="chipGlow" cx="50%" cy="50%" r="50%">
-              <stop offset="0%" stop-color="#7c7cff" stop-opacity="0.38"></stop>
-              <stop offset="100%" stop-color="#7c7cff" stop-opacity="0"></stop>
-            </radialGradient>
-            <filter id="chipShadow" x="-50%" y="-50%" width="200%" height="200%">
-              <feGaussianBlur in="SourceAlpha" stdDeviation="8" result="blur"></feGaussianBlur>
-              <feOffset dx="0" dy="0" result="offsetBlur"></feOffset>
-              <feFlood flood-color="#7c7cff" flood-opacity="0.45" result="glowColor"></feFlood>
-              <feComposite in="glowColor" in2="offsetBlur" operator="in" result="glow"></feComposite>
-              <feMerge><feMergeNode in="glow"></feMergeNode><feMergeNode in="SourceGraphic"></feMergeNode></feMerge>
-            </filter>
-            <filter id="textGlow">
-              <feGaussianBlur stdDeviation="2.2" result="blur"></feGaussianBlur>
-              <feMerge><feMergeNode in="blur"></feMergeNode><feMergeNode in="SourceGraphic"></feMergeNode></feMerge>
-            </filter>
-          </defs>
-            <g id="traces">
-              <path d="M100 100 H200 V210 H326" class="trace-bg"></path>
-              <path d="M100 100 H200 V210 H326" class="trace-flow purple"></path>
-              <path d="M80 180 H180 V230 H326" class="trace-bg"></path>
-              <path d="M80 180 H180 V230 H326" class="trace-flow blue"></path>
-              <path d="M60 260 H150 V250 H326" class="trace-bg"></path>
-              <path d="M60 260 H150 V250 H326" class="trace-flow yellow"></path>
-              <path d="M100 350 H200 V210 H326" class="trace-bg"></path>
-              <path d="M100 350 H200 V210 H326" class="trace-flow green"></path>
-              <path d="M700 90 H560 V210 H474" class="trace-bg"></path>
-              <path d="M700 90 H560 V210 H474" class="trace-flow blue"></path>
-              <path d="M740 160 H580 V230 H474" class="trace-bg"></path>
-              <path d="M740 160 H580 V230 H474" class="trace-flow green"></path>
-              <path d="M720 250 H590 V250 H474" class="trace-bg"></path>
-              <path d="M720 250 H590 V250 H474" class="trace-flow red"></path>
-              <path d="M680 340 H570 V270 H474" class="trace-bg"></path>
-              <path d="M680 340 H570 V270 H474" class="trace-flow yellow"></path>
-            </g>
-            <ellipse cx="400" cy="240" rx="98" ry="72" fill="url(#chipGlow)" opacity="0.0" class="chip-halo"></ellipse>
-            <rect x="330" y="190" width="140" height="100" rx="20" ry="20" fill="url(#chipGradient)" stroke="#2a2a3a" stroke-width="1.5" class="chip-body" filter="url(#chipShadow)"></rect>
-            <rect x="330" y="190" width="140" height="100" rx="20" ry="20" fill="none" stroke="#7c7cff" stroke-width="1.2" opacity="0.0" class="chip-glow"></rect>
-            <g>
-              <rect x="322" y="205" width="8" height="10" fill="url(#pinGradient)" rx="2"></rect>
-              <rect x="322" y="225" width="8" height="10" fill="url(#pinGradient)" rx="2"></rect>
-              <rect x="322" y="245" width="8" height="10" fill="url(#pinGradient)" rx="2"></rect>
-              <rect x="322" y="265" width="8" height="10" fill="url(#pinGradient)" rx="2"></rect>
-            </g>
-            <g>
-              <rect x="470" y="205" width="8" height="10" fill="url(#pinGradient)" rx="2"></rect>
-              <rect x="470" y="225" width="8" height="10" fill="url(#pinGradient)" rx="2"></rect>
-              <rect x="470" y="245" width="8" height="10" fill="url(#pinGradient)" rx="2"></rect>
-              <rect x="470" y="265" width="8" height="10" fill="url(#pinGradient)" rx="2"></rect>
-            </g>
-            <text x="400" y="248" font-family="Space Grotesk, Arial, sans-serif" font-size="44" font-weight="900" fill="url(#textGradient)" text-anchor="middle" alignment-baseline="middle" letter-spacing="4" class="chip-text" filter="url(#textGlow)">AS</text>
-            <text x="400" y="274" font-family="JetBrains Mono, monospace" font-size="11" fill="#9a9ac4" text-anchor="middle" letter-spacing="3" opacity="0.92" class="chip-sub">INITIALIZING</text>
-            <circle cx="100" cy="100" r="5" fill="#111" stroke="#333" stroke-width="1"></circle>
-            <circle cx="80" cy="180" r="5" fill="#111" stroke="#333" stroke-width="1"></circle>
-            <circle cx="60" cy="260" r="5" fill="#111" stroke="#333" stroke-width="1"></circle>
-            <circle cx="100" cy="350" r="5" fill="#111" stroke="#333" stroke-width="1"></circle>
-            <circle cx="700" cy="90" r="5" fill="#111" stroke="#333" stroke-width="1"></circle>
-            <circle cx="740" cy="160" r="5" fill="#111" stroke="#333" stroke-width="1"></circle>
-            <circle cx="720" cy="250" r="5" fill="#111" stroke="#333" stroke-width="1"></circle>
-            <circle cx="680" cy="340" r="5" fill="#111" stroke="#333" stroke-width="1"></circle>
-          </svg>
-        </div>
-      </div>
-      <div class="loader-subtitle">INITIALIZING SYSTEMS...</div>
-      <div class="loading-bar-container">
-        <div class="loading-bar"></div>
-      </div>
-      <div class="loader-status"><span id="loader-pct">0</span>% • LOADING 3D • PREPARING AI</div>
+      <div class="glow-ring"></div>
+      <div class="loader-subtitle mono">AYUSH SHENDE • <span id="loader-pct">0</span>%</div>
     </div>
   </div>
 
-  <div class="cursor-dot" data-cursor-dot></div>
+  <!-- Custom cursor -->
+  <div class="cursor-dot"     data-cursor-dot></div>
   <div class="cursor-outline" data-cursor-outline></div>
-  
-  <!-- STARS BG FOR TEST — REMOVE WHEN USER SAYS (comment canvas + script) -->
-  <canvas id="stars-canvas" aria-hidden="true" style="position:fixed;inset:0;width:100vw;height:100vh;z-index:-11;pointer-events:none;display:block;"></canvas>
-  <!-- Layered canvases: liquid fluid + immersive 3D hero -->
-  <canvas id="liquid-canvas" aria-hidden="true"></canvas>
+
+  <!-- Background layers -->
+  <canvas id="stars-canvas" aria-hidden="true" style="position:fixed;inset:0;width:100vw;height:100vh;z-index:-2;pointer-events:none;display:block;"></canvas>
   <canvas id="hero-3d-canvas" aria-hidden="true"></canvas>
 
   <div class="bg-animation">
-    <div class="star-field"></div>
     <div class="grid-overlay"></div>
     <div id="break-overlay" aria-hidden="true"></div>
   </div>
 
-  <div class="bg-layer about-bg"></div>
-  <div class="bg-layer skills-bg"></div>
-  <div class="bg-layer projects-bg"></div>
-
-  <!-- Fallback for WebGL -->
+  <!-- WebGL fallback -->
   <div id="webgl-fallback" class="webgl-fallback" style="display:none;">
     <img src="images/upi-offline-mesh.png" alt="3D preview fallback" loading="lazy"/>
   </div>
 
+  <!-- ═══════════════════════ NAVBAR ═══════════════════════════════ -->
   <nav id="navbar" class="nav-hidden">
     <div class="container">
       <a href="#" class="logo" aria-label="Ayush Shende home">AS<span class="logo-dot">_</span></a>
@@ -163,38 +81,40 @@
     </div>
   </nav>
 
-  <!-- HERO — IMMERSIVE DEVELOPER -->
+  <!-- ═══════════════════════ HERO ═════════════════════════════════ -->
   <section class="hero" id="hero">
     <div class="container hero-grid">
+
+      <!-- LEFT — text content -->
       <div class="hero-content">
         <div class="hero-eyebrow">
           <span class="eyebrow-dot"></span>
-          <span class="mono">AVAILABLE FOR INTERNSHIPS — Summer 2026</span>
+          <span class="mono">OPEN TO SDE INTERNSHIPS — 2026–2027</span>
           <span class="eyebrow-divider">•</span>
           <span class="mono muted">JIT Nagpur • CGPA 8.95/10</span>
         </div>
 
         <h1 class="hero-title">
           <span class="hero-greeting mono">hey, I'm</span>
-          Ayush Shende
-          <span class="hero-role" id="hero-role">Systems & Backend Engineer</span>
+          <span class="hero-name">Ayush Shende</span>
+          <span class="hero-role" id="hero-role">Systems &amp; Backend Engineer</span>
         </h1>
 
         <p class="hero-desc">
-          Computer Science undergrad building <span>encryption-backed backends</span>, 
-          <span>high-performance C++ engines</span> and <span>offline-first mobile apps</span>. 
-          Currently exploring mesh networks, DPI & scalable systems.
+          CS undergrad building <strong>encryption-backed backends</strong>,
+          <strong>high-performance C++ engines</strong> and <strong>offline-first mobile apps</strong>.
+          Exploring mesh networks, DPI &amp; scalable systems.
         </p>
 
-        <!-- Terminal window — developer identity -->
+        <!-- Terminal window -->
         <div class="hero-terminal">
           <div class="terminal-header">
             <div class="terminal-dots"><span></span><span></span><span></span></div>
-            <span class="mono terminal-title">ayush@portfolio: ~$ whoami</span>
+            <span class="terminal-title">ayush@portfolio: ~$ whoami</span>
           </div>
           <div class="terminal-body mono">
             <div class="terminal-line"><span class="t-prompt">$</span> cat stack.txt <span class="t-cursor">█</span></div>
-            <div class="terminal-output">Java 17 • Spring Boot 3 • C++17 • Flutter • Kafka • Docker • H2 • Firestore</div>
+            <div class="terminal-output">Java 17 • Spring Boot 3 • C++17 • Flutter • Kafka • Docker</div>
             <div class="terminal-line"><span class="t-prompt">$</span> ./run --projects 4 --leetcode 100+ --cgpa 8.95</div>
             <div class="terminal-output success">✓ All systems operational. Ready to ship.</div>
           </div>
@@ -215,43 +135,37 @@
         </div>
       </div>
 
-      <!-- 3D Spline-inspired visual — 3 cards, floating -->
+      <!-- RIGHT — clean avatar, no clutter -->
       <div class="hero-visual">
-        <div class="hero-3d-wrap" id="hero-3d-wrap">
-          <div class="hero-3d-overlay">
-            <div class="float-card card-1" data-link="#projects" data-tip="UPI Mesh — hybrid encryption">
-              <span class="mono"><span class="live-dot"></span> RSA-OAEP + AES-256-GCM</span>
-              <strong>Hybrid Encryption</strong>
-              <span class="card-metric mono">SHA-256 • GCM auth</span>
-            </div>
-            <div class="float-card card-2" data-link="#projects" data-tip="DPI Engine — C++17">
-              <span class="mono"><span class="live-dot green"></span> 5-TUPLE • SNI • HTTP HOST</span>
-              <strong>DPI Engine</strong>
-              <span class="card-metric mono"><span id="dpi-counter">44</span> pkts • <span class="pct">36 fwd</span></span>
-            </div>
-            <div class="float-card card-3" data-link="#experience" data-tip="JPMorgan">
-              <span class="mono"><span class="live-dot"></span> JPMorgan • Kafka • Spring Boot</span>
-              <strong>Exactly-Once</strong>
-              <span class="card-metric mono">putIfAbsent • @Transactional</span>
-            </div>
-            <div class="float-card card-4" data-link="#projects" data-tip="Splitmate">
-              <span class="mono"><span class="live-dot purple"></span> Flutter • Hive • Riverpod</span>
-              <strong>Offline-First App</strong>
-              <span class="card-metric mono">Firestore sync • PDF</span>
+        <div class="avatar-scene">
+
+          <!-- Glow rings (CSS only, no JS needed) -->
+          <div class="avatar-orbit orbit-1"></div>
+          <div class="avatar-orbit orbit-2"></div>
+          <div class="avatar-orbit orbit-3"></div>
+
+          <!-- Photo -->
+          <div class="avatar-frame">
+            <div class="avatar-ring">
+              <div class="avatar-inner">
+                <img src="images/ayush-photo.jpg" alt="Ayush Shende — Software Engineer" loading="eager"/>
+              </div>
             </div>
           </div>
-          <!-- Spline viewer (lazy, optional) -->
-          <spline-viewer id="spline-hero" style="display:none; width:100%; height:100%;" url="https://prod.spline.design/6Wq1Q7YGyM-iab9i/scene.splinecode"></spline-viewer>
-          <div class="hero-3d-hint mono"><i class="fa-solid fa-arrows-up-down-left-right"></i> Move cursor • Scroll to explore</div>
-        </div>
-      </div>
-    </div>
+
+
+        </div> <!-- .avatar-scene -->
+      </div> <!-- .hero-visual -->
+    </div> <!-- .hero-grid -->
+
+    <!-- Scroll Indicator positioned at bottom center of the entire hero section -->
     <div class="scroll-indicator">
       <span class="mono">SCROLL</span>
       <div class="scroll-line"></div>
     </div>
   </section>
 
+  <!-- ═══════════════════════ ABOUT ════════════════════════════════ -->
   <section class="section" id="about">
     <div class="container">
       <div class="section-header">
@@ -262,7 +176,7 @@
       <div class="about-grid">
         <div class="about-glass-box">
           <p class="about-content">
-            I'm a <strong>B.Tech CSE</strong> student at <strong>Jhulelal Institute of Technology, Nagpur</strong> (2024–2028, <strong>CGPA 8.95/10</strong>). 
+            I'm a <strong>B.Tech CSE</strong> student at <strong>Jhulelal Institute of Technology, Nagpur</strong> (2024–2028, <strong>CGPA 8.95/10</strong>).
             I specialize in <strong>Java / Spring Boot</strong>, <strong>C++17</strong>, and <strong>Flutter</strong>, with hands-on experience in REST API design, relational databases, Kafka, and hybrid encryption.
           </p>
           <p class="about-content" style="margin-top:16px;">
@@ -272,13 +186,14 @@
             <span><i class="fa-solid fa-shield-halved"></i> Hybrid RSA+AES</span>
             <span><i class="fa-solid fa-diagram-project"></i> Exactly-Once</span>
             <span><i class="fa-solid fa-bolt"></i> Multithreaded DPI</span>
+            <span><i class="fa-solid fa-mobile-screen"></i> Offline-First</span>
           </div>
         </div>
         <div class="about-meta">
           <div class="meta-card">
             <span class="mono meta-label">EDUCATION</span>
             <h4>Jhulelal Institute of Technology</h4>
-            <p>B.Tech — Computer Science & Eng.</p>
+            <p>B.Tech — Computer Science &amp; Eng.</p>
             <span class="meta-sub mono">Aug 2024 – May 2028 • CGPA 8.95/10 • Nagpur</span>
           </div>
           <div class="meta-card">
@@ -294,6 +209,7 @@
     </div>
   </section>
 
+  <!-- ═══════════════════════ EXPERIENCE ═══════════════════════════ -->
   <section class="section" id="experience">
     <div class="container">
       <div class="section-header">
@@ -311,7 +227,7 @@
             <span class="exp-badge mono">EXPERIENCE</span>
           </div>
           <ul class="exp-points">
-            <li>Integrated <strong>Apache Kafka</strong> into Spring Boot microservice to consume & deserialize high-throughput financial transactions (configurable topic, embedded test broker).</li>
+            <li>Integrated <strong>Apache Kafka</strong> into Spring Boot microservice to consume &amp; deserialize high-throughput financial transactions (configurable topic, embedded test broker).</li>
             <li>Implemented <strong>transactional persistence</strong> with Spring Data JPA + H2 — entity models, relational schema, atomic balance updates.</li>
             <li>Exposed <strong>RESTful account-balance endpoint</strong> via Spring MVC, consumed external Incentive API (RestTemplate) to embed reward logic.</li>
             <li>Verified E2E with <strong>Maven unit test suites</strong> covering Kafka ingestion, JPA persistence, third-party API.</li>
@@ -353,6 +269,7 @@
     </div>
   </section>
 
+  <!-- ═══════════════════════ SKILLS ═══════════════════════════════ -->
   <section class="section" id="skills">
     <div class="container">
       <div class="section-header">
@@ -375,13 +292,13 @@
         </div>
         <div class="skill-card">
           <div class="skill-icon"><i class="fa-solid fa-database"></i></div>
-          <h3>Data & Messaging</h3>
+          <h3>Data &amp; Messaging</h3>
           <p>SQL • Firestore • SQLite • H2 • Apache Kafka</p>
           <span class="mono">Exactly-Once • Idempotency • PCAP</span>
         </div>
         <div class="skill-card">
           <div class="skill-icon"><i class="fa-solid fa-screwdriver-wrench"></i></div>
-          <h3>Infra & Practices</h3>
+          <h3>Infra &amp; Practices</h3>
           <p>Git • Docker • Maven • Agile • Unit Testing</p>
           <span class="mono">TLS • TCP/IP • Hybrid Encryption</span>
         </div>
@@ -393,6 +310,7 @@
     </div>
   </section>
 
+  <!-- ═══════════════════════ PROJECTS ═════════════════════════════ -->
   <section class="section" id="projects">
     <div class="container">
       <div class="section-header">
@@ -401,7 +319,8 @@
         <p>Each repo has a live demo or build — not just screenshots.</p>
       </div>
 
-      <!-- UPI OFFLINE MESH — FEATURED -->
+
+      <!-- UPI OFFLINE MESH -->
       <div class="project-card featured-project visible" data-project="upi">
         <div class="project-info">
           <div class="project-badge mono"><span class="live-dot"></span> LIVE ON RENDER • 2026</div>
@@ -442,11 +361,11 @@
           <h3>DPI Engine</h3>
           <p class="project-subtitle mono">Deep Packet Inspection • PCAP • TLS SNI • HTTP Host • Multithreading</p>
           <p>
-            High-performance <strong>C++17 analyser</strong> that parses raw PCAP, decodes Ethernet/IPv4/TCP/UDP, extracts <strong>TLS SNI & HTTP Host</strong> for L7 app ID. Implements <strong>5-tuple flow tracking</strong> + rule engine (app/domain/IP) and <strong>load-balancer + fast-path</strong> pipeline with producer-consumer queue.
+            High-performance <strong>C++17 analyser</strong> that parses raw PCAP, decodes Ethernet/IPv4/TCP/UDP, extracts <strong>TLS SNI &amp; HTTP Host</strong> for L7 app ID. Implements <strong>5-tuple flow tracking</strong> + rule engine (app/domain/IP) and <strong>load-balancer + fast-path</strong> pipeline with producer-consumer queue.
           </p>
           <ul class="project-features mono">
             <li>✓ Single-threaded + Multi-threaded (LB + FP workers)</li>
-            <li>✓ Winsock2 • Thread-safe queue • Configurable —block-app / —block-domain</li>
+            <li>✓ Winsock2 • Thread-safe queue • Configurable --block-app / --block-domain</li>
             <li>✓ Filtered output PCAP + per-thread stats</li>
           </ul>
           <div class="tags">
@@ -475,7 +394,7 @@
           <h3>Splitmate</h3>
           <p class="project-subtitle mono">Cross-platform expense manager • Offline-first • SaaS-ready</p>
           <p>
-            Personal + group expense tracking from one codebase. <strong>Firestore real-time sync</strong>, automated debt-splitting, monthly analytics with category breakdowns, and <strong>on-demand PDF</strong> (NotoSans emoji-safe) + share. <strong>Hive</strong> cache & <strong>Riverpod</strong> state, secured with Firebase Auth + AppCheck.
+            Personal + group expense tracking from one codebase. <strong>Firestore real-time sync</strong>, automated debt-splitting, monthly analytics with category breakdowns, and <strong>on-demand PDF</strong> (NotoSans emoji-safe) + share. <strong>Hive</strong> cache &amp; <strong>Riverpod</strong> state, secured with Firebase Auth + AppCheck.
           </p>
           <ul class="project-features mono">
             <li>✓ Group splits • settledBy per-member • Budgets 80%/100% alerts</li>
@@ -493,9 +412,9 @@
         <div class="phone-frame">
           <button class="nav prev" aria-label="previous">‹</button>
           <div class="carousel-wrapper">
-            <img src="images/splitmate1.png" class="carousel-image" alt="Splitmate Home"/>
-            <img src="images/splitmate2.png" class="carousel-image hidden" alt="Splitmate Groups"/>
-            <img src="images/splitmate3.png" class="carousel-image hidden" alt="Splitmate Reports"/>
+            <img src="images/splitmate1.png"      class="carousel-image"        alt="Splitmate Home"/>
+            <img src="images/splitmate2.png"      class="carousel-image hidden" alt="Splitmate Groups"/>
+            <img src="images/splitmate3.png"      class="carousel-image hidden" alt="Splitmate Reports"/>
             <img src="images/splitmate4.png.jpeg" class="carousel-image hidden" alt="Splitmate Budget"/>
             <img src="images/splitmate5.png.jpeg" class="carousel-image hidden" alt="Splitmate Analytics"/>
             <img src="images/splitmate6.png.jpeg" class="carousel-image hidden" alt="Splitmate PDF"/>
@@ -508,6 +427,41 @@
             <div class="dot" data-index="3"></div>
             <div class="dot" data-index="4"></div>
             <div class="dot" data-index="5"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- BMW 7 SERIES 3D -->
+      <div class="project-card featured-project visible" data-project="bmw3d">
+        <div class="project-info">
+          <div class="project-badge mono"><span class="live-dot purple"></span> LIVE ON CLOUDFLARE • NEW</div>
+          <h3>BMW 7 Series 3D Experience</h3>
+          <p class="project-subtitle mono">Interactive 3D WebGL Configurator • High-Fidelity Rendering</p>
+          <p>
+            An immersive <strong>interactive 3D experience</strong> for the BMW 7 Series. Built with WebGL/Three.js to render highly detailed car models directly in the browser with realistic lighting, reflections, and materials.
+            Demonstrates expertise in <strong>spatial UI, 3D web graphics, and optimized asset delivery</strong> on the edge.
+          </p>
+          <ul class="project-features mono">
+            <li>✓ Real-time 3D rendering and material manipulation</li>
+            <li>✓ High-fidelity reflections and dynamic lighting</li>
+            <li>✓ Deployed via Cloudflare Workers for edge performance</li>
+          </ul>
+          <div class="tags">
+            <span>Three.js</span><span>WebGL</span><span>3D UI</span><span>Cloudflare</span>
+          </div>
+          <div class="project-links">
+            <a href="https://github.com/AyushShende2679/3d-bmw-7-series" target="_blank" class="project-link"><i class="fa-brands fa-github"></i> GitHub</a>
+            <a href="https://3d-bmw-7-series.ayushshende2679.workers.dev/" target="_blank" class="project-link primary"><i class="fa-solid fa-arrow-up-right-from-square"></i> Live Demo</a>
+          </div>
+        </div>
+        <div class="project-media">
+          <div class="media-frame browser-frame">
+            <div class="browser-bar"><span></span><span></span><span></span><span class="mono">bmw-3d • workers.dev</span></div>
+            <img src="images/BMW%207%20SERIES.png" class="media-img" alt="BMW 7 Series 3D Experience" loading="lazy"/>
+          </div>
+          <div class="code-snippet mono">
+            <span class="cs-dim">SCENE</span> <span class="cs-accent">init()</span> <span class="cs-dim">→ PBR MATERIALS</span><br/>
+            <span class="cs-dim">new THREE.WebGLRenderer({ antialias: true })</span>
           </div>
         </div>
       </div>
@@ -545,6 +499,7 @@
     </div>
   </section>
 
+  <!-- ═══════════════════════ CONTACT ══════════════════════════════ -->
   <section class="section contact-section" id="contact">
     <div class="container">
       <div class="section-header">
@@ -574,7 +529,7 @@
         <a href="https://leetcode.com/u/uQUtgCde87" target="_blank" class="contact-card leetcode-card">
           <div class="icon-box"><i class="fa-solid fa-code"></i></div>
           <h3>LeetCode</h3>
-          <p class="mono">100+ problems • uQUtgCde87</p>
+          <p class="mono">100+ problems</p>
           <span class="card-cta mono">View →</span>
         </a>
       </div>
@@ -584,6 +539,7 @@
     </div>
   </section>
 
+  <!-- ═══════════════════════ FOOTER ═══════════════════════════════ -->
   <footer class="main-footer">
     <div class="container">
       <div class="footer-content">
@@ -601,12 +557,12 @@
       </div>
       <div class="footer-bottom mono">
         <p>© 2026 Ayush Shende. Crafted with <span style="color:#e25555;">♥</span> • Systems thinking • Ship fast, verify with tests.</p>
-        <p class="foot-sub">Immersive 3D: Three.js vanilla • Spline-inspired • DPR-aware • WebGL fallback</p>
+        <p class="foot-sub">Three.js 3D • Galaxy particles • WebGL • DPR-aware</p>
       </div>
     </div>
   </footer>
 
-  <!-- AI WIDGET — PREDEFINED, NO API -->
+  <!-- ═══════════════════════ AI WIDGET ════════════════════════════ -->
   <div id="ai-widget" class="ai-widget" aria-live="polite">
     <button id="ai-toggle" class="ai-toggle" aria-label="Ask Ayush AI">
       <span class="ai-toggle-icon"><i class="fa-solid fa-robot"></i></span>
@@ -640,16 +596,18 @@
         <button data-q="How to contact Ayush?">Contact</button>
       </div>
       <div class="ai-input-row">
-        <input id="ai-input" class="ai-input mono" placeholder="Ask about Ayush — e.g., 'CGPA?', 'Flutter projects?' " autocomplete="off"/>
+        <input id="ai-input" class="ai-input mono" placeholder="Ask about Ayush — e.g., 'CGPA?', 'Flutter projects?'" autocomplete="off"/>
         <button id="ai-send" class="ai-send"><i class="fa-solid fa-paper-plane"></i></button>
       </div>
       <div class="ai-footer mono">Predefined • Offline • Answers only about Ayush</div>
     </div>
   </div>
 
-  <script type="module" src="js/stars-background.js"></script>
-  <script type="module" src="js/hero-3d.js"></script>
-  <script src="js/ai-widget.js"></script>
-  <script src="script.js"></script>
+  <!-- Scripts -->
+  <script src="js/stars-background.js?v=2" defer></script>
+  <script src="js/hero-3d.js?v=2" defer></script>
+  <script src="js/ai-widget.js?v=2"></script>
+  <script src="script.js?v=2" defer></script>
+
 </body>
 </html>

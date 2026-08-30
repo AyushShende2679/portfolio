@@ -1,422 +1,443 @@
-// hero-3d.js — Immersive Spline-inspired Three.js hero
-// Stack: Three.js vanilla (importmap) — lightweight, high performance
-// Features: Spline-like soft clay materials, scroll-driven camera, mouse parallax, DPR-aware, WebGL fallback
+// hero-3d.js — DRAMATIC Immersive Three.js Background
+// Full-screen particle wave mesh + geometric accents + scroll-reactive
+// Uses global THREE (loaded via CDN script tag)
 
-import * as THREE from 'three';
+(function () {
 
-const canvas = document.getElementById('hero-3d-canvas');
-const wrap = document.getElementById('hero-3d-wrap');
-const fallback = document.getElementById('webgl-fallback');
-const preloaderPct = document.getElementById('loader-pct');
+var heroCanvas = document.getElementById('hero-3d-canvas');
+var fallback   = document.getElementById('webgl-fallback');
+var loaderPct  = document.getElementById('loader-pct');
 
-// WebGL support check
 function isWebGLAvailable() {
-  try { const c = document.createElement('canvas'); return !!(window.WebGLRenderingContext && (c.getContext('webgl') || c.getContext('experimental-webgl'))); } catch { return false; }
+  try {
+    var c = document.createElement('canvas');
+    return !!(window.WebGLRenderingContext && (c.getContext('webgl') || c.getContext('experimental-webgl')));
+  } catch (e) { return false; }
 }
-if (!isWebGLAvailable() || !canvas) {
-  if (canvas) canvas.style.display = 'none';
+
+if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  if (heroCanvas) heroCanvas.style.display = 'none';
+  return;
+}
+if (!isWebGLAvailable() || !heroCanvas) {
+  if (heroCanvas) heroCanvas.style.display = 'none';
   if (fallback) fallback.style.display = 'block';
-  console.warn('[hero-3d] WebGL not available — showing fallback');
-} else {
+  return;
+}
 
-const isMobile = /iPhone|iPad|Android/i.test(navigator.userAgent) || window.innerWidth < 768;
-const DPR = Math.min(window.devicePixelRatio || 1, isMobile ? 1 : 1.7);
+var isMobile = /iPhone|iPad|Android/i.test(navigator.userAgent) || window.innerWidth < 768;
+var DPR = Math.min(window.devicePixelRatio || 1, isMobile ? 1.2 : 1.8);
 
-// Scene
-const scene = new THREE.Scene();
-scene.fog = new THREE.Fog(0x050507, 6, 14);
+// ── SCENE ──────────────────────────────────────────────────────────────
+var scene = new THREE.Scene();
 
-// Camera
-const camera = new THREE.PerspectiveCamera(48, 1, 0.1, 100);
-camera.position.set(0, 0.2, 6.2);
+// ── CAMERA ─────────────────────────────────────────────────────────────
+var camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 200);
+camera.position.set(0, 0, 22);
 
-// Renderer
-const renderer = new THREE.WebGLRenderer({ canvas, antialias: !isMobile, alpha: true, powerPreference: 'high-performance' });
+// ── RENDERER ───────────────────────────────────────────────────────────
+var renderer = new THREE.WebGLRenderer({
+  canvas: heroCanvas,
+  antialias: !isMobile,
+  alpha: true,
+  powerPreference: 'high-performance'
+});
 renderer.setPixelRatio(DPR);
 renderer.setClearColor(0x000000, 0);
 renderer.outputColorSpace = THREE.SRGBColorSpace;
-if (!isMobile) renderer.toneMapping = THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure = 1.15;
-
-// Sizes — hero-visual wrap size or full hero on mobile
-function getSize() {
-  if (wrap) {
-    const r = wrap.getBoundingClientRect();
-    if (r.width > 50 && r.height > 50) return { w: r.width, h: r.height };
-  }
-  return { w: window.innerWidth, h: window.innerHeight };
+if (!isMobile) {
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 1.3;
 }
+
 function resize() {
-  const { w, h } = getSize();
-  const dpr = Math.min(window.devicePixelRatio || 1, isMobile ? 1 : 1.7);
-  renderer.setPixelRatio(dpr);
-  renderer.setSize(w, h, false);
-  camera.aspect = w / h;
+  renderer.setSize(window.innerWidth, window.innerHeight, false);
+  camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
 }
 resize();
-
-// Lighting — Spline-like soft studio
-const ambient = new THREE.AmbientLight(0x7c7cff, 0.55);
-scene.add(ambient);
-const dir = new THREE.DirectionalLight(0xffffff, 1.2);
-dir.position.set(3, 4, 5);
-scene.add(dir);
-const point1 = new THREE.PointLight(0x7c7cff, 18, 12);
-point1.position.set(-2.5, 1.2, 2);
-scene.add(point1);
-const point2 = new THREE.PointLight(0xa78bfa, 12, 10);
-point2.position.set(2.2, -1, 1.5);
-scene.add(point2);
-const hemi = new THREE.HemisphereLight(0x7c7cff, 0x050507, 0.65);
-scene.add(hemi);
-
-// Helpers — gradient floor (subtle grid)
-const grid = new THREE.GridHelper(20, 20, 0x22223a, 0x1a1a2e);
-grid.position.y = -2.2;
-grid.material.opacity = isMobile ? 0.10 : 0.16;
-grid.material.transparent = true;
-scene.add(grid);
-
-// Materials — Spline clay
-const matPrimary = new THREE.MeshStandardMaterial({
-  color: 0x8b8bff,
-  roughness: 0.28,
-  metalness: 0.12,
-  emissive: 0x1a1a3a,
-  emissiveIntensity: 0.18,
-});
-const matSecondary = new THREE.MeshStandardMaterial({
-  color: 0xa5b4fc,
-  roughness: 0.35,
-  metalness: 0.08,
-  emissive: 0x151530,
-  emissiveIntensity: 0.15,
-});
-const matGlass = new THREE.MeshPhysicalMaterial({
-  color: 0xffffff,
-  roughness: 0.12,
-  metalness: 0.0,
-  transmission: 0.72,
-  thickness: 0.5,
-  transparent: true,
-  opacity: 0.82,
-  clearcoat: 1,
-  clearcoatRoughness: 0.15,
-});
-const matWire = new THREE.MeshStandardMaterial({
-  color: 0x7c7cff,
-  wireframe: true,
-  transparent: true,
-  opacity: 0.28,
-});
-
-// Group for parallax
-const heroGroup = new THREE.Group();
-scene.add(heroGroup);
-
-// Main shapes — Spline-like composition — decluttered: smaller, pushed right to avoid text overlap
-const knotGeo = new THREE.TorusKnotGeometry(0.82, 0.24, 96, 16);
-const knot = new THREE.Mesh(knotGeo, matPrimary);
-knot.position.set(0.85, 0.10, 0);
-heroGroup.add(knot);
-
-const icoGeo = new THREE.IcosahedronGeometry(0.44, 2);
-const ico = new THREE.Mesh(icoGeo, matGlass);
-ico.position.set(1.35, 0.45, -0.5);
-heroGroup.add(ico);
-
-const icoWire = new THREE.Mesh(new THREE.IcosahedronGeometry(0.47, 1), matWire);
-icoWire.position.copy(ico.position);
-heroGroup.add(icoWire);
-
-// Small floating torus (developer accent) — more subtle
-const torusSmall = new THREE.Mesh(new THREE.TorusGeometry(0.30, 0.09, 16, 32), matSecondary);
-torusSmall.position.set(-1.15, -0.55, 0.2);
-torusSmall.rotation.x = 0.6;
-heroGroup.add(torusSmall);
-
-// Tiny spheres — code particles (like { } floating)
-const sphereGeo = new THREE.SphereGeometry(0.09, 16, 16);
-const sphereMat = new THREE.MeshStandardMaterial({ color: 0x7ee081, emissive: 0x1a3a1a, emissiveIntensity: 0.4, roughness: 0.4 });
-for (let i=0;i< (isMobile?4:7); i++) {
-  const s = new THREE.Mesh(sphereGeo, sphereMat.clone());
-  const ang = (i/7)*Math.PI*2;
-  const r = 1.6 + Math.random()*0.6;
-  s.position.set(Math.cos(ang)*r*0.6, Math.sin(ang)*r*0.35 + (Math.random()-0.5)*0.6, (Math.random()-0.5)*1.2);
-  s.userData = { baseY: s.position.y, phase: Math.random()*Math.PI*2, speed: 0.7+Math.random()*0.6 };
-  heroGroup.add(s);
-}
-
-// PARTICLES REMOVED FOR CHECK — KEEP STARS BG ONLY — UNCOMMENT TO RESTORE
-/*
-const pCount = isMobile ? 240 : 620;
-const pGeo = new THREE.BufferGeometry();
-const pPos = new Float32Array(pCount*3);
-const pVel = new Float32Array(pCount*3);
-for (let i=0;i<pCount;i++) {
-  pPos[i*3] = (Math.random()-0.5)*14;
-  pPos[i*3+1] = (Math.random()-0.5)*8;
-  pPos[i*3+2] = (Math.random()-0.5)*7 -1;
-  pVel[i*3]   = (Math.random()-0.5)*0.025;
-  pVel[i*3+1] = (Math.random()-0.5)*0.022 + 0.008;
-  pVel[i*3+2] = (Math.random()-0.5)*0.018;
-}
-pGeo.setAttribute('position', new THREE.BufferAttribute(pPos, 3));
-const pMat = new THREE.PointsMaterial({
-  color: 0x8b8bff,
-  size: isMobile? 0.016:0.024,
-  transparent: true,
-  opacity: 0.38,
-  sizeAttenuation: true,
-  blending: THREE.AdditiveBlending,
-});
-const points = new THREE.Points(pGeo, pMat);
-scene.add(points);
-*/
-
-// Code glyphs floating (DOM-like but in 3D via sprites)
-const glyphGroup = new THREE.Group();
-scene.add(glyphGroup);
-function makeTextSprite(text, color='#7c7cff') {
-  const c = document.createElement('canvas');
-  c.width=256; c.height=128;
-  const ctx=c.getContext('2d');
-  ctx.fillStyle='transparent'; ctx.fillRect(0,0,256,128);
-  ctx.font='600 42px JetBrains Mono, monospace';
-  ctx.fillStyle=color; ctx.textAlign='center'; ctx.textBaseline='middle';
-  ctx.shadowColor=color; ctx.shadowBlur=12;
-  ctx.fillText(text,128,64);
-  const tex=new THREE.CanvasTexture(c);
-  tex.needsUpdate=true;
-  const mat=new THREE.SpriteMaterial({ map: tex, transparent:true, opacity:0.9, blending: THREE.AdditiveBlending });
-  const s=new THREE.Sprite(mat);
-  s.scale.set(1.1,0.55,1);
-  return s;
-}
-if (!isMobile) {
-  const glyphs = [
-    {t:'< />', x:-1.6, y:1.0, c:'#7c7cff'},
-    {t:'0101', x:1.35, y:-0.95, c:'#a5b4fc'},
-  ];
-  glyphs.forEach(g=>{
-    const sp=makeTextSprite(g.t, g.c);
-    sp.position.set(g.x,g.y,0.6);
-    sp.userData={ baseY: g.y, phase: Math.random()*6 };
-    glyphGroup.add(sp);
-  });
-}
-
-// State
-let scrollOff = 0;
-let mouseX=0, mouseY=0, targetX=0, targetY=0;
-let rafId=null;
-let paused=false;
-let time=0;
-
-// Scroll-driven — immersive camera + breaking background reaction (full page)
-window.addEventListener('scroll', ()=>{
-  const max = document.body.scrollHeight - window.innerHeight;
-  scrollOff = max>0 ? window.scrollY / max : 0;
-  const sHero = Math.min(1, Math.max(0, scrollOff*3.2));
-  // breaking stays active after hero so background keeps reacting
-  const isBreaking = scrollOff > 0.07;
-  document.body.classList.toggle('is-breaking', isBreaking);
-  document.body.style.setProperty('--break', scrollOff.toFixed(3));
-  document.body.style.setProperty('--break-hero', sHero.toFixed(3));
-}, {passive:true});
-
-// Mouse parallax (in hero only, but we listen globally)
-window.addEventListener('mousemove', (e)=>{
-  const cx = (e.clientX / window.innerWidth -0.5)*2;
-  const cy = (e.clientY / window.innerHeight -0.5)*2;
-  targetX = cx;
-  targetY = cy;
-  // also feed liquid-canvas if exists via custom event? leave as is
-}, {passive:true});
-
-// Touch
-window.addEventListener('touchmove', (e)=>{
-  if (!e.touches[0]) return;
-  targetX = (e.touches[0].clientX / window.innerWidth -0.5)*2;
-  targetY = (e.touches[0].clientY / window.innerHeight -0.5)*2;
-}, {passive:true});
-
-// Visibility — keep particles alive for Experience→Projects (no pause on scroll)
-const visObs = new IntersectionObserver((entries)=>{
-  // intentionally keep rendering for background particles — only pause if tab hidden
-  paused = document.hidden;
-  if (!paused && !rafId) loop();
-}, {threshold:0});
-if (wrap) visObs.observe(wrap);
-else visObs.observe(canvas);
-
-document.addEventListener('visibilitychange', ()=>{
-  paused = document.hidden;
-  if (!paused && !rafId) loop();
-});
-
 window.addEventListener('resize', resize);
 
-// Loading progress simulation (real 3D is instant, but we animate preloader pct)
-let pct=0;
-const pctItv=setInterval(()=>{
-  pct=Math.min(100, pct+ (pct<60? 8: pct<85?4:2));
-  if (preloaderPct) preloaderPct.textContent=pct;
-  if(pct>=100) clearInterval(pctItv);
-}, 90);
+// ── LIGHTING ───────────────────────────────────────────────────────────
+scene.add(new THREE.AmbientLight(0x080812, 1.0));
 
-// Animation loop
+var dirLight = new THREE.DirectionalLight(0xffffff, 2.0);
+dirLight.position.set(4, 8, 12);
+scene.add(dirLight);
+
+var accent1 = new THREE.PointLight(0x7c7cff, 80, 40);
+accent1.position.set(-10, 5, 8);
+scene.add(accent1);
+
+var accent2 = new THREE.PointLight(0xa855f7, 60, 35);
+accent2.position.set(10, -4, 6);
+scene.add(accent2);
+
+var accent3 = new THREE.PointLight(0x22d3ee, 45, 30);
+accent3.position.set(0, 12, -4);
+scene.add(accent3);
+
+// ── PARTICLE WAVE MESH ─────────────────────────────────────────────────
+var COLS = isMobile ? 40 : 80;
+var ROWS = isMobile ? 30 : 55;
+var SPREAD_X = 50;
+var SPREAD_Y = 35;
+var TOTAL = COLS * ROWS;
+
+var waveGeo    = new THREE.BufferGeometry();
+var wavePos    = new Float32Array(TOTAL * 3);
+var waveColors = new Float32Array(TOTAL * 3);
+var waveSizes  = new Float32Array(TOTAL);
+var wavePhases = new Float32Array(TOTAL);
+
+var C1 = new THREE.Color(0x7c7cff);
+var C2 = new THREE.Color(0xa855f7);
+var C3 = new THREE.Color(0x22d3ee);
+var C4 = new THREE.Color(0x4ade80);
+var palette = [C1, C2, C3, C4];
+
+for (var i = 0; i < COLS; i++) {
+  for (var j = 0; j < ROWS; j++) {
+    var idx = i * ROWS + j;
+    var nx = (i / (COLS - 1)) * 2 - 1;
+    var ny = (j / (ROWS - 1)) * 2 - 1;
+    wavePos[idx * 3]     = nx * SPREAD_X * 0.5;
+    wavePos[idx * 3 + 1] = ny * SPREAD_Y * 0.5;
+    wavePos[idx * 3 + 2] = 0;
+    wavePhases[idx] = Math.sin(i * 0.5 + j * 0.4);
+    var dist = Math.sqrt(nx * nx + ny * ny);
+    var col = palette[Math.floor(dist * 2) % palette.length].clone();
+    col.lerp(palette[Math.floor(dist * 3 + 1) % palette.length], 0.4);
+    waveColors[idx * 3]     = col.r;
+    waveColors[idx * 3 + 1] = col.g;
+    waveColors[idx * 3 + 2] = col.b;
+    waveSizes[idx] = isMobile ? 0.8 : (Math.random() < 0.1 ? 2.8 : 1.2 + Math.random() * 0.8);
+  }
+}
+
+waveGeo.setAttribute('position', new THREE.BufferAttribute(wavePos, 3));
+waveGeo.setAttribute('color',    new THREE.BufferAttribute(waveColors, 3));
+waveGeo.setAttribute('size',     new THREE.BufferAttribute(waveSizes, 1));
+
+// Glow sprite texture
+function makeSpriteTex() {
+  var c = document.createElement('canvas');
+  c.width = c.height = 64;
+  var ctx = c.getContext('2d');
+  var g = ctx.createRadialGradient(32, 32, 0, 32, 32, 32);
+  g.addColorStop(0,   'rgba(124,124,255,1)');
+  g.addColorStop(0.3, 'rgba(124,124,255,0.8)');
+  g.addColorStop(0.7, 'rgba(124,124,255,0.25)');
+  g.addColorStop(1,   'rgba(124,124,255,0)');
+  ctx.fillStyle = g;
+  ctx.fillRect(0, 0, 64, 64);
+  return new THREE.CanvasTexture(c);
+}
+
+var waveMat = new THREE.PointsMaterial({
+  size: isMobile ? 0.18 : 0.30,
+  vertexColors: true,
+  transparent: true,
+  opacity: 0.90,
+  sizeAttenuation: true,
+  blending: THREE.AdditiveBlending,
+  depthWrite: false,
+  map: makeSpriteTex(),
+});
+
+var wavePoints = new THREE.Points(waveGeo, waveMat);
+wavePoints.position.z = -2;
+scene.add(wavePoints);
+
+// ── GRID LINES ─────────────────────────────────────────────────────────
+var linePositions = [];
+var lineColors    = [];
+
+for (var li = 0; li < COLS; li++) {
+  for (var lj = 0; lj < ROWS; lj++) {
+    var lidx = li * ROWS + lj;
+    var lx = wavePos[lidx * 3];
+    var ly = wavePos[lidx * 3 + 1];
+    var lz = wavePos[lidx * 3 + 2];
+    if (li < COLS - 1) {
+      var nidx = (li + 1) * ROWS + lj;
+      linePositions.push(lx, ly, lz, wavePos[nidx*3], wavePos[nidx*3+1], wavePos[nidx*3+2]);
+      lineColors.push(0.30, 0.30, 0.90, 0.20, 0.20, 0.70);
+    }
+    if (lj < ROWS - 1) {
+      var nidx2 = li * ROWS + lj + 1;
+      linePositions.push(lx, ly, lz, wavePos[nidx2*3], wavePos[nidx2*3+1], wavePos[nidx2*3+2]);
+      lineColors.push(0.50, 0.20, 0.80, 0.30, 0.15, 0.60);
+    }
+  }
+}
+
+var lineGeo = new THREE.BufferGeometry();
+lineGeo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(linePositions), 3));
+lineGeo.setAttribute('color',    new THREE.BufferAttribute(new Float32Array(lineColors), 3));
+
+var lineMat = new THREE.LineBasicMaterial({
+  vertexColors: true,
+  transparent: true,
+  opacity: isMobile ? 0.06 : 0.12,
+  blending: THREE.AdditiveBlending,
+  depthWrite: false,
+});
+
+var lineSegments = new THREE.LineSegments(lineGeo, lineMat);
+lineSegments.position.z = -2;
+scene.add(lineSegments);
+
+// ── FLOATING 3D ACCENTS ────────────────────────────────────────────────
+var accentGroup = new THREE.Group();
+scene.add(accentGroup);
+
+var matKnot = new THREE.MeshStandardMaterial({
+  color: 0x7c7cff, roughness: 0.12, metalness: 0.7,
+  emissive: 0x3a10a0, emissiveIntensity: 0.55,
+});
+var matGlass = new THREE.MeshPhysicalMaterial({
+  color: 0xa855f7, roughness: 0.05, metalness: 0.0,
+  transmission: 0.88, thickness: 1.0, transparent: true, opacity: 0.90,
+  clearcoat: 1.0, ior: 1.5, emissive: 0x3a0060, emissiveIntensity: 0.3,
+});
+var matCyan = new THREE.MeshStandardMaterial({
+  color: 0x22d3ee, roughness: 0.2, metalness: 0.5,
+  emissive: 0x005566, emissiveIntensity: 0.6,
+});
+
+// Main torus knot — right side background
+var knot = new THREE.Mesh(new THREE.TorusKnotGeometry(2.8, 0.75, 180, 24, 2, 3), matKnot);
+knot.position.set(9, 1, -6);
+accentGroup.add(knot);
+
+var knotWireMat = new THREE.MeshBasicMaterial({ color: 0xffffff, wireframe: true, transparent: true, opacity: 0.06 });
+var knotWire = new THREE.Mesh(new THREE.TorusKnotGeometry(2.95, 0.75, 90, 16, 2, 3), knotWireMat);
+knotWire.position.copy(knot.position);
+accentGroup.add(knotWire);
+
+// Glass icosahedron — left
+var ico = new THREE.Mesh(new THREE.IcosahedronGeometry(1.7, 2), matGlass);
+ico.position.set(-10, 3, -5);
+accentGroup.add(ico);
+
+// Cyan octahedron
+var octa = new THREE.Mesh(new THREE.OctahedronGeometry(1.3, 1), matCyan);
+octa.position.set(11, -5, -4);
+accentGroup.add(octa);
+
+// Orbit rings around ico
+var ringMat1 = new THREE.MeshBasicMaterial({ color: 0xa855f7, transparent: true, opacity: 0.55, blending: THREE.AdditiveBlending });
+var ring = new THREE.Mesh(new THREE.TorusGeometry(2.4, 0.1, 12, 60), ringMat1);
+ring.position.copy(ico.position);
+ring.rotation.x = Math.PI / 3;
+accentGroup.add(ring);
+
+var ringMat2 = new THREE.MeshBasicMaterial({ color: 0x22d3ee, transparent: true, opacity: 0.35, blending: THREE.AdditiveBlending });
+var ring2 = new THREE.Mesh(new THREE.TorusGeometry(2.8, 0.07, 12, 60), ringMat2);
+ring2.position.copy(ico.position);
+ring2.rotation.x = Math.PI / 5;
+ring2.rotation.y = Math.PI / 4;
+accentGroup.add(ring2);
+
+// ── STARS ──────────────────────────────────────────────────────────────
+var starCount = isMobile ? 600 : 1600;
+var starGeo   = new THREE.BufferGeometry();
+var starPos   = new Float32Array(starCount * 3);
+var starCol   = new Float32Array(starCount * 3);
+var starPalette = [[0.48,0.48,1.0],[0.66,0.33,0.97],[0.13,0.83,0.93],[1.0,1.0,1.0]];
+
+for (var si = 0; si < starCount; si++) {
+  starPos[si*3]   = (Math.random()-0.5)*100;
+  starPos[si*3+1] = (Math.random()-0.5)*60;
+  starPos[si*3+2] = (Math.random()-0.5)*80 - 8;
+  var sc = starPalette[Math.floor(Math.random()*starPalette.length)];
+  starCol[si*3]=sc[0]; starCol[si*3+1]=sc[1]; starCol[si*3+2]=sc[2];
+}
+starGeo.setAttribute('position', new THREE.BufferAttribute(starPos, 3));
+starGeo.setAttribute('color',    new THREE.BufferAttribute(starCol, 3));
+
+var stars = new THREE.Points(starGeo, new THREE.PointsMaterial({
+  size: 0.07, vertexColors: true, transparent: true, opacity: 0.65,
+  blending: THREE.AdditiveBlending, depthWrite: false,
+}));
+scene.add(stars);
+
+// ── STATE ──────────────────────────────────────────────────────────────
+var time      = 0;
+var scrollOff = 0;
+var mouseX    = 0, mouseY = 0, targetX = 0, targetY = 0;
+var rafId     = null;
+var paused    = false;
+
+window.addEventListener('scroll', function () {
+  scrollOff = window.scrollY / Math.max(1, document.body.scrollHeight - window.innerHeight);
+  document.body.classList.toggle('is-breaking', scrollOff > 0.05);
+  document.body.style.setProperty('--break', scrollOff.toFixed(3));
+}, { passive: true });
+
+window.addEventListener('mousemove', function (e) {
+  targetX = (e.clientX / window.innerWidth  - 0.5) * 2;
+  targetY = (e.clientY / window.innerHeight - 0.5) * 2;
+}, { passive: true });
+
+window.addEventListener('touchmove', function (e) {
+  if (!e.touches[0]) return;
+  targetX = (e.touches[0].clientX / window.innerWidth  - 0.5) * 2;
+  targetY = (e.touches[0].clientY / window.innerHeight - 0.5) * 2;
+}, { passive: true });
+
+document.addEventListener('visibilitychange', function () {
+  paused = document.hidden;
+  if (!paused && !rafId) loop();
+});
+
+// Loading counter
+var pct = 0;
+var pctItv = setInterval(function () {
+  pct = Math.min(100, pct + (pct < 60 ? 9 : pct < 85 ? 4 : 2));
+  if (loaderPct) loaderPct.textContent = pct;
+  if (pct >= 100) clearInterval(pctItv);
+}, 80);
+
+// ── ANIMATION LOOP ─────────────────────────────────────────────────────
 function loop() {
   rafId = requestAnimationFrame(loop);
   if (paused) return;
-  time += 0.014;
+  time += 0.010;
 
-  // Smooth mouse — faster
-  mouseX += (targetX - mouseX)*0.14;
-  mouseY += (targetY - mouseY)*0.14;
+  mouseX += (targetX - mouseX) * 0.08;
+  mouseY += (targetY - mouseY) * 0.08;
 
-  // Scroll rotation + camera dolly (immersive)
-  // hero: scroll 0→0.25 controls hero, beyond that we settle
-  const s = Math.min(1, Math.max(0, scrollOff*3.2)); // hero occupies ~30% of page
+  var sp = Math.min(1, scrollOff * 2.5);
 
-  // Knot — main hero object rotates with scroll — stays right
-  knot.rotation.y = time*0.28 + s*Math.PI*1.1 + mouseX*0.45;
-  knot.rotation.x = Math.sin(time*0.3)*0.15 + mouseY*0.18 - s*0.25;
-  knot.rotation.z = s*0.35;
-  knot.position.y = 0.10 + Math.sin(time*0.7)*0.08 - s*0.25;
-  knot.position.x = 0.85 + mouseX*0.18 + s*0.15;
-  // Scale — small at first, bigger as scroll down (like next page)
-  const sc = 0.62 + scrollOff*0.62; // 0.62 at hero → 1.24 at bottom
-  knot.scale.set(sc,sc,sc);
+  // ── Animate particle wave ──
+  var posAttr   = waveGeo.attributes.position;
+  var colorAttr = waveGeo.attributes.color;
 
-  // BREAKING reaction — full-page scroll (background keeps reacting, not static)
-  {
-    const breakI = Math.min(1, Math.max(0, (scrollOff - 0.06)/0.14));
-    const sustain = 0.55 + Math.min(1, scrollOff*1.2)*0.45;
-    const eff = breakI * sustain;
-    if(eff > 0.02){
-      const shake = Math.sin(time*18 + scrollOff*28) * 0.045 * eff;
-      const shake2 = Math.cos(time*22 + scrollOff*22) * 0.032 * eff;
-      knot.position.x += shake;
-      knot.position.y += shake2*0.6;
-      knot.rotation.z += shake*0.9;
-      const shatter = 1 - eff*0.14 + Math.sin(time*12)*0.018*eff;
-      knot.scale.multiplyScalar(shatter);
-      // points removed — stars bg now handles particles
-      grid.scale.x = 1 + eff*0.06;
-      grid.material.opacity = 0.16 + eff*0.18;
-      point1.intensity = 16 + Math.sin(time*14)*6*eff + eff*5;
-      point2.intensity = 11 + Math.cos(time*12)*5*eff + eff*3;
-      glyphGroup.children.forEach(sp=>{
-        sp.position.x += (Math.random()-0.5)*0.012*eff;
-      });
+  for (var i = 0; i < COLS; i++) {
+    for (var j = 0; j < ROWS; j++) {
+      var idx = i * ROWS + j;
+      var nx  = (i / (COLS - 1)) * 2 - 1;
+      var ny  = (j / (ROWS - 1)) * 2 - 1;
+      var dist = Math.sqrt(nx * nx + ny * ny);
+
+      var wave1 = Math.sin(nx * 3.5 + time * 1.2) * Math.cos(ny * 2.8 + time * 0.9);
+      var wave2 = Math.sin((nx + ny) * 2.5 + time * 0.7) * 0.5;
+      var wave3 = Math.cos(dist * 5 - time * 1.5) * 0.5;
+
+      var mx = nx * SPREAD_X * 0.5 - mouseX * 8;
+      var my = ny * SPREAD_Y * 0.5 - mouseY * 4;
+      var md = Math.sqrt(mx*mx + my*my);
+      var mouseRepel = Math.max(0, 1 - md / 12) * 1.2;
+
+      var waveAmp   = 1.8 + sp * 2.8;
+      var vortexAmt = sp * sp;
+      var angle     = Math.atan2(ny, nx);
+      var vortexZ   = Math.sin(angle * 3 - time * 2 + dist * 4) * vortexAmt * 3.5;
+
+      var z = (wave1 + wave2 + wave3) * waveAmp + mouseRepel + vortexZ;
+      posAttr.setZ(idx, z);
+
+      var r, g, b;
+      if (sp < 0.3) {
+        r = 0.35 + (dist % 1) * 0.35;
+        g = 0.20 + Math.abs(wave1) * 0.25;
+        b = 0.90 + Math.abs(wave2) * 0.10;
+      } else {
+        r = 0.2 + vortexAmt * 0.6;
+        g = 0.6 - vortexAmt * 0.4 + Math.abs(wave3) * 0.3;
+        b = 0.95 - vortexAmt * 0.3;
+      }
+      colorAttr.setXYZ(idx, r, g, b);
     }
   }
+  posAttr.needsUpdate   = true;
+  colorAttr.needsUpdate = true;
 
-  // Ico cluster — small→big with scroll
-  ico.rotation.y = -time*0.5 - s*0.8;
-  ico.rotation.x = time*0.18;
-  ico.position.y = 0.55 + Math.sin(time*0.9+1)*0.08 - s*0.2;
-  icoWire.rotation.copy(ico.rotation);
-  icoWire.position.copy(ico.position);
-  const icoSc = 0.68 + scrollOff*0.58;
-  ico.scale.set(icoSc,icoSc,icoSc);
-  icoWire.scale.set(icoSc,icoSc,icoSc);
-
-  torusSmall.rotation.y = time*0.6 + s*1.2;
-  torusSmall.rotation.x = 0.6 + Math.sin(time*0.5)*0.3;
-  torusSmall.position.y = -0.65 + Math.sin(time*0.8+2)*0.09;
-  const torusSc = 0.72 + scrollOff*0.52;
-  torusSmall.scale.set(torusSc,torusSc,torusSc);
-
-  // Spheres float
-  heroGroup.children.forEach(ch=>{
-    if (ch.userData && ch.userData.baseY!==undefined && ch.geometry && ch.geometry.type==='SphereGeometry') {
-      ch.position.y = ch.userData.baseY + Math.sin(time*ch.userData.speed + ch.userData.phase)*0.12;
-      ch.rotation.y += 0.02;
-    }
-  });
-
-  // Glyphs float
-  glyphGroup.children.forEach(sp=>{
-    if (sp.userData) sp.position.y = sp.userData.baseY + Math.sin(time*0.7 + sp.userData.phase)*0.07;
-    sp.material.opacity = 0.75 + Math.sin(time+sp.userData.phase)*0.18;
-  });
-
-  // PARTICLES DRIFT REMOVED — keeping StarsCanvas only
-  /*
-  const pos = pGeo.attributes.position;
-  const scrollDrift = scrollOff * 0.6;
-  for(let i=0;i<pCount;i++){
-    const ix=i*3, iy=i*3+1, iz=i*3+2;
-    pos.array[ix] += pVel[ix] + (Math.random()-0.5)*0.003 + scrollDrift*0.004;
-    pos.array[iy] += pVel[iy] + (Math.random()-0.5)*0.003;
-    pos.array[iz] += pVel[iz] + (Math.random()-0.5)*0.002;
-    if(pos.array[ix] > 7) pos.array[ix]= -7; if(pos.array[ix] < -7) pos.array[ix]= 7;
-    if(pos.array[iy] > 4.2) pos.array[iy]= -4.2; if(pos.array[iy] < -4.2) pos.array[iy]= 4.2;
-    if(pos.array[iz] > 3.5) pos.array[iz]= -3.5; if(pos.array[iz] < -3.5) pos.array[iz]= 3.5;
-    if(Math.random()<0.015){
-      pVel[ix] += (Math.random()-0.5)*0.004;
-      pVel[iy] += (Math.random()-0.5)*0.004;
-      pVel[iz] += (Math.random()-0.5)*0.004;
-      pVel[ix]= Math.max(-0.03, Math.min(0.03, pVel[ix]));
-      pVel[iy]= Math.max(-0.03, Math.min(0.03, pVel[iy]));
+  // Update line positions
+  var linePos = lineSegments.geometry.attributes.position;
+  var li2 = 0;
+  for (var i2 = 0; i2 < COLS; i2++) {
+    for (var j2 = 0; j2 < ROWS; j2++) {
+      var idx2 = i2 * ROWS + j2;
+      var px = posAttr.getX(idx2), py = posAttr.getY(idx2), pz = posAttr.getZ(idx2);
+      if (i2 < COLS - 1) {
+        var ni = (i2+1)*ROWS+j2;
+        linePos.setXYZ(li2*2,   px, py, pz);
+        linePos.setXYZ(li2*2+1, posAttr.getX(ni), posAttr.getY(ni), posAttr.getZ(ni));
+        li2++;
+      }
+      if (j2 < ROWS - 1) {
+        var nj = i2*ROWS+j2+1;
+        linePos.setXYZ(li2*2,   px, py, pz);
+        linePos.setXYZ(li2*2+1, posAttr.getX(nj), posAttr.getY(nj), posAttr.getZ(nj));
+        li2++;
+      }
     }
   }
-  pos.needsUpdate=true;
-  points.rotation.y = time*0.014 + mouseX*0.06 + scrollOff*0.35;
-  points.rotation.x = mouseY*0.03 + scrollOff*0.12;
-  points.position.y = -scrollOff*0.45;
-  points.position.z = -scrollOff*0.6;
-  */
+  linePos.needsUpdate = true;
 
-  // Grid — scrolls like next page
-  grid.position.z = Math.sin(time*0.18)*0.15 - scrollOff*1.2;
-  grid.position.y = -2.2 + scrollOff*0.85;
-  grid.rotation.y = scrollOff*0.18;
+  waveMat.opacity = 0.78 + Math.sin(time * 1.1) * 0.12 + sp * 0.15;
+  lineMat.opacity = (isMobile ? 0.06 : 0.10) + sp * 0.12;
 
-  // Camera — moves completely through page (not hero-capped)
-  const camX = mouseX*0.55;
-  const camY = mouseY*0.24 + scrollOff*0.95;
-  const camZ = 6.2 - scrollOff*2.6 + Math.sin(time*0.11)*0.05;
-  camera.position.x += (camX - camera.position.x)*0.065;
-  camera.position.y += (camY - camera.position.y)*0.065;
-  camera.position.z += (camZ - camera.position.z)*0.065;
-  camera.lookAt(0, -scrollOff*0.9, -scrollOff*0.5);
+  wavePoints.rotation.z   = mouseX * 0.04 + time * 0.012 + sp * 0.3;
+  lineSegments.rotation.z = wavePoints.rotation.z;
+  wavePoints.position.y   = mouseY * 1.5 - sp * 3;
+  lineSegments.position.y = wavePoints.position.y;
+  wavePoints.position.z   = -2 - sp * 4;
+  lineSegments.position.z = wavePoints.position.z;
 
-  // Point lights pulse (Spline glow)
-  point1.intensity = 16 + Math.sin(time*0.9)*3;
-  point2.intensity = 11 + Math.cos(time*0.7)*2.5;
-  point1.position.x = -2.5 + Math.sin(time*0.4)*0.5;
-  point2.position.x = 2.2 + Math.cos(time*0.35)*0.4;
+  // 3D accents
+  knot.rotation.y = time * 0.28 + mouseX * 0.4 + sp * Math.PI;
+  knot.rotation.x = Math.sin(time * 0.22) * 0.18 + mouseY * 0.15;
+  knot.rotation.z = time * 0.10;
+  knot.position.y = 1 + Math.sin(time * 0.7) * 0.35;
+  var kS = 1.0 + sp * 0.2;
+  knot.scale.setScalar(kS);
+  knotWire.rotation.copy(knot.rotation);
+  knotWire.position.copy(knot.position);
+  knotWire.scale.copy(knot.scale);
+  matKnot.emissiveIntensity = 0.45 + Math.sin(time * 2.0) * 0.2;
 
-  // Hero group overall parallax + small→big
-  heroGroup.position.x = mouseX*0.18;
-  heroGroup.position.y = mouseY*0.12;
-  heroGroup.rotation.y = mouseX*0.12;
-  heroGroup.rotation.x = -mouseY*0.08;
-  const groupSc = 0.82 + scrollOff*0.38;
-  heroGroup.scale.set(groupSc,groupSc,groupSc);
+  ico.rotation.y = -time * 0.35;
+  ico.rotation.x =  time * 0.18;
+  ico.position.y =  3 + Math.sin(time * 0.6 + 1) * 0.25;
+  ico.position.z = -5 - sp * 2;
+  ring.rotation.z  = time * 0.6;
+  ring.position.copy(ico.position);
+  ring2.rotation.z = -time * 0.45;
+  ring2.rotation.y =  time * 0.2;
+  ring2.position.copy(ico.position);
+
+  octa.rotation.y  = time * 0.45;
+  octa.rotation.x  = time * 0.28;
+  octa.position.y  = -5 + Math.sin(time * 0.55 + 2) * 0.3;
+  octa.position.z  = -4 - sp * 1.5;
+
+  accent1.intensity  = 75 + Math.sin(time * 0.9) * 20;
+  accent2.intensity  = 55 + Math.cos(time * 0.75) * 15;
+  accent3.intensity  = 40 + Math.sin(time * 1.1) * 12;
+  accent1.position.x = -10 + Math.sin(time * 0.4) * 3;
+  accent2.position.x =  10 + Math.cos(time * 0.35) * 3;
+
+  stars.rotation.y = time * 0.005 + mouseX * 0.05;
+  stars.rotation.x = mouseY * 0.02;
+  stars.position.y = -sp * 3;
+
+  // Camera
+  var camX = mouseX * 1.2;
+  var camY = mouseY * 0.7 + sp * 2;
+  var camZ = 22 - sp * 7;
+  camera.position.x += (camX - camera.position.x) * 0.06;
+  camera.position.y += (camY - camera.position.y) * 0.06;
+  camera.position.z += (camZ - camera.position.z) * 0.06;
+  camera.lookAt(mouseX * 0.4, -sp * 1.5, -sp);
 
   renderer.render(scene, camera);
 }
 loop();
 
-// Attempt to load Spline viewer if present — progressive enhancement
-const splineEl = document.getElementById('spline-hero');
-if (splineEl) {
-  // Show spline after 1.2s as layer behind Three.js? We keep Three.js as main, spline as optional
-  // If spline loads we can blend opacity. For now keep hidden to avoid double load cost.
-  // User can enable by removing display:none in console: splineEl.style.display='block'
-  splineEl.addEventListener('load', ()=>{
-    console.log('[hero-3d] Spline loaded');
-    // Optionally fade Three.js slightly
-    // canvas.style.opacity='0.85';
-  });
-}
+window.__hero3D = { scene: scene, camera: camera, renderer: renderer, wavePoints: wavePoints };
 
-// Expose for debugging
-window.__hero3D = { scene, camera, renderer, pause: ()=>paused=true, resume: ()=>{paused=false; loop();} };
-
-} // end webgl check
+})();
