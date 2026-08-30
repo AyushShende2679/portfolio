@@ -1,65 +1,241 @@
-const images = document.querySelectorAll(".carousel-image");
-const prev = document.querySelector(".prev");
-const next = document.querySelector(".next");
-const dots = document.querySelectorAll(".dot");
-
-let current = 0;
-
-function updateCarousel() {
-
-  if (images.length === 0) return;
-
-  images.forEach(img => img.classList.add("hidden"));
-  images[current].classList.remove("hidden");
-  
-  dots.forEach(dot => dot.classList.remove("active"));
- 
-  if(dots[current]) {
-    dots[current].classList.add("active");
+// === ENHANCED CAROUSEL — supports multiple phone-frames + 6 images (Splitmate) ===
+(function(){
+  const frames = document.querySelectorAll('.phone-frame');
+  if(frames.length===0){
+    // fallback for single old layout
+    const images = document.querySelectorAll(".carousel-image");
+    const prev = document.querySelector(".prev");
+    const next = document.querySelector(".next");
+    const dots = document.querySelectorAll(".dot");
+    let current = 0;
+    function updateCarousel(){
+      if (images.length===0) return;
+      images.forEach(img => img.classList.add("hidden"));
+      images[current].classList.remove("hidden");
+      dots.forEach(dot => dot.classList.remove("active"));
+      if(dots[current]) dots[current].classList.add("active");
+    }
+    if(prev) prev.onclick=()=>{ current=(current-1+images.length)%images.length; updateCarousel(); };
+    if(next) next.onclick=()=>{ current=(current+1)%images.length; updateCarousel(); };
+    dots.forEach((dot,index)=> dot.onclick=()=>{ current=index; updateCarousel(); });
+    return;
   }
-}
-
-
-if (prev) {
-  prev.onclick = () => {
-    if (images.length > 0) {
-      current = (current - 1 + images.length) % images.length;
-      updateCarousel();
+  frames.forEach(frame=>{
+    const images = frame.querySelectorAll('.carousel-image');
+    const prev = frame.querySelector('.prev');
+    const next = frame.querySelector('.next');
+    const dots = frame.querySelectorAll('.dot');
+    let current = 0;
+    function update(){
+      images.forEach(img=>img.classList.add('hidden'));
+      if(images[current]) images[current].classList.remove('hidden');
+      dots.forEach(d=>d.classList.remove('active'));
+      if(dots[current]) dots[current].classList.add('active');
     }
-  };
-}
+    if(prev) prev.addEventListener('click', ()=>{ current=(current-1+images.length)%images.length; update(); });
+    if(next) next.addEventListener('click', ()=>{ current=(current+1)%images.length; update(); });
+    dots.forEach((dot,i)=> dot.addEventListener('click', ()=>{ current=i; update(); }));
+    // autoplay subtle
+    let auto = setInterval(()=>{ current=(current+1)%images.length; update(); }, 4200);
+    frame.addEventListener('mouseenter', ()=> clearInterval(auto));
+    frame.addEventListener('mouseleave', ()=>{ auto=setInterval(()=>{ current=(current+1)%images.length; update(); }, 4200); });
+    // swipe
+    let sx=0;
+    frame.addEventListener('touchstart', e=> sx=e.touches[0].clientX, {passive:true});
+    frame.addEventListener('touchend', e=>{
+      const dx=e.changedTouches[0].clientX - sx;
+      if(Math.abs(dx)>40){ current = dx<0 ? (current+1)%images.length : (current-1+images.length)%images.length; update(); }
+    });
+  });
+})();
 
-if (next) {
-  next.onclick = () => {
-    if (images.length > 0) {
-      current = (current + 1) % images.length;
-      updateCarousel();
+// === HERO TYPING — developer vibe ===
+(function(){
+  const el=document.getElementById('hero-role');
+  if(!el) return;
+  const roles=[
+    'Systems & Backend Engineer',
+    'Java • Spring Boot • C++17',
+    'Offline-First • Encryption • DPI',
+    'Flutter • Firestore • Kafka'
+  ];
+  let ri=0, ci=0, del=false, txt='';
+  function tick(){
+    const full=roles[ri];
+    if(!del){ txt=full.slice(0,ci+1); ci++; if(ci===full.length){ del=true; setTimeout(tick,1600); return; } }
+    else { txt=full.slice(0,ci-1); ci--; if(ci===0){ del=false; ri=(ri+1)%roles.length; } }
+    el.textContent=txt;
+    setTimeout(tick, del? 32: 78);
+  }
+  // start after preloader
+  setTimeout(tick, 2600);
+})();
+
+// === FLOAT CARDS — dynamic interactivity (4 cards) ===
+(function(){
+  const wrap = document.getElementById('hero-3d-wrap');
+  const cards = document.querySelectorAll('.float-card');
+  if(!wrap || cards.length===0) return;
+
+  // tilt + magnetic hover + click scroll
+  cards.forEach(card=>{
+    // pause float animation on hover for precise tilt
+    card.addEventListener('mouseenter', ()=> card.style.animationPlayState='paused');
+    card.addEventListener('mouseleave', ()=> {
+      card.style.animationPlayState='running';
+      card.style.transform='';
+    });
+    card.addEventListener('mousemove', (e)=>{
+      const r = card.getBoundingClientRect();
+      const x = e.clientX - r.left;
+      const y = e.clientY - r.top;
+      const cx = r.width/2, cy = r.height/2;
+      const rx = ((y - cy)/cy) * -7;
+      const ry = ((x - cx)/cx) * 7;
+      card.style.transform = `perspective(700px) rotateX(${rx}deg) rotateY(${ry}deg) translateZ(8px) scale(1.03)`;
+      card.style.setProperty('--mouse-x', x+'px');
+      card.style.setProperty('--mouse-y', y+'px');
+    });
+    card.addEventListener('click', ()=>{
+      const target = card.getAttribute('data-link');
+      if(target){
+        const el = document.querySelector(target);
+        if(el) el.scrollIntoView({behavior:'smooth', block:'start'});
+        // pulse
+        card.style.boxShadow = '0 0 28px rgba(124,124,255,0.45)';
+        setTimeout(()=> card.style.boxShadow='', 420);
+      }
+    });
+  });
+
+  // magnetic pull within wrap — subtle parallax for cards based on wrap mouse
+  wrap.addEventListener('mousemove', (e)=>{
+    const r = wrap.getBoundingClientRect();
+    const nx = (e.clientX - r.left)/r.width - 0.5;
+    const ny = (e.clientY - r.top)/r.height - 0.5;
+    cards.forEach((card,i)=>{
+      if(card.matches(':hover')) return; // tilt handles hover
+      card.style.animationPlayState='paused';
+      const depth = (i+1)*0.55;
+      card.style.transform = `translate3d(${nx*depth*7}px, ${ny*depth*7}px, 0)`;
+    });
+  });
+  wrap.addEventListener('mouseleave', ()=>{
+    cards.forEach(c=> {
+      if(!c.matches(':hover')) {
+        c.style.transform='';
+        c.style.animationPlayState='running';
+      }
+    });
+  });
+
+  // live DPI counter — dynamic
+  const dpiEl = document.getElementById('dpi-counter');
+  if(dpiEl){
+    let n = 44;
+    setInterval(()=>{
+      n += Math.floor(Math.random()*3);
+      if(n>92) n=44;
+      dpiEl.textContent = n;
+      dpiEl.style.color = 'var(--success)';
+      setTimeout(()=> dpiEl.style.color='', 220);
+    }, 1800);
+  }
+
+  // sequential highlight pulse — makes cards feel alive even without hover
+  let hi = 0;
+  setInterval(()=>{
+    const c = cards[hi % cards.length];
+    c.style.borderColor = 'rgba(124,124,255,0.42)';
+    c.style.boxShadow = '0 12px 36px rgba(124,124,255,0.20)';
+    setTimeout(()=>{
+      c.style.borderColor='';
+      c.style.boxShadow='';
+    }, 700);
+    hi++;
+  }, 2200);
+
+  // RANDOM FLOAT inside box — cards drift to random positions (desktop only)
+  const isMobileRand = window.innerWidth < 769;
+  if(!isMobileRand){
+    function boundsFor(card){
+      const wr = wrap.getBoundingClientRect();
+      const cr = card.getBoundingClientRect();
+      const pad = 12;
+      const hintH = 34; // keep clear of hint
+      const maxX = Math.max(0, wr.width - cr.width - pad*2);
+      const maxY = Math.max(0, wr.height - cr.height - pad*2 - hintH);
+      return { maxX, maxY, pad };
     }
-  };
-}
+    function moveToRandom(card){
+      const b = boundsFor(card);
+      let x, y, tries=0;
+      // try to avoid overlap with other cards
+      do{
+        x = b.pad + Math.random()*b.maxX;
+        y = b.pad + Math.random()*b.maxY;
+        tries++;
+        let overlap=false;
+        for(const other of cards){
+          if(other===card) continue;
+          const ox = parseFloat(other.style.left) || 0;
+          const oy = parseFloat(other.style.top) || 0;
+          // if other not yet placed, skip
+          if(!other.style.left) continue;
+          const dx = x - ox, dy = y - oy;
+          if(Math.hypot(dx,dy) < 145) { overlap=true; break; }
+        }
+        if(!overlap) break;
+      } while(tries<12);
+      card.style.right='auto';
+      card.style.bottom='auto';
+      card.style.left = x.toFixed(1)+'px';
+      card.style.top = y.toFixed(1)+'px';
+    }
+    // initial spread + interval
+    setTimeout(()=>{
+      cards.forEach((c,i)=>{
+        setTimeout(()=> moveToRandom(c), i*280);
+        const interval = 3600 + Math.random()*2600; // 3.6-6.2s per card, desynced
+        setInterval(()=>{
+          if(c.matches(':hover')) return;
+          if(document.hidden) return;
+          // pause float briefly for smooth left/top glide
+          moveToRandom(c);
+        }, interval);
+      });
+    }, 700);
+    window.addEventListener('resize', ()=>{
+      // re-randomize on resize
+      cards.forEach(c=> moveToRandom(c));
+    });
+  }
 
-dots.forEach((dot, index) => {
-  dot.onclick = () => {
-    current = index;
-    updateCarousel();
-  };
-});
+  // touch: tap cycles highlight
+  wrap.addEventListener('touchstart', ()=>{}, {passive:true});
+})();
 
 
 const hamburger = document.querySelector(".hamburger");
 const navLinks = document.querySelector(".nav-links");
 const navbar = document.getElementById("navbar");
 
-hamburger.addEventListener("click", () => {
-  hamburger.classList.toggle("active");
-  navLinks.classList.toggle("active");
-});
+if(hamburger && navLinks){
+  const toggleMenu=()=>{
+    hamburger.classList.toggle("active");
+    navLinks.classList.toggle("active");
+    document.body.classList.toggle("no-scroll", navLinks.classList.contains("active"));
+  };
+  hamburger.addEventListener("click", toggleMenu);
+  hamburger.addEventListener("keydown", (e)=>{ if(e.key==='Enter'||e.key===' ') { e.preventDefault(); toggleMenu(); } });
+}
 
 
 document.querySelectorAll(".nav-links a").forEach(link => {
   link.addEventListener("click", () => {
-    hamburger.classList.remove("active");
-    navLinks.classList.remove("active");
+    if(hamburger) hamburger.classList.remove("active");
+    if(navLinks) navLinks.classList.remove("active");
+    document.body.classList.remove("no-scroll");
   });
 });
 
@@ -69,6 +245,8 @@ window.addEventListener("scroll", () => {
   } else {
     navbar.classList.remove("scrolled");
   }
+  const aiW = document.getElementById('ai-widget');
+  if (aiW) aiW.classList.toggle('scrolled', window.scrollY > 90);
 });
 
 
@@ -138,7 +316,26 @@ tiltCards.forEach(card => {
 });
 
 const canvas = document.getElementById('liquid-canvas');
-const gl = canvas.getContext('webgl');
+let gl = null;
+try {
+  // Perf guard: disable heavy fluid on mobile / low-memory / prefers-reduced-motion
+  const isMobileFluid = /iPhone|iPad|Android/i.test(navigator.userAgent) || window.innerWidth < 768;
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (isMobileFluid || prefersReduced) {
+    if (canvas) { canvas.style.display='none'; canvas.style.opacity='0'; }
+    console.log('[liquid] disabled for perf (mobile/reduced-motion)');
+  } else {
+    gl = canvas.getContext('webgl');
+    if(!gl) throw new Error('no gl');
+  }
+} catch(e){
+  console.warn('[liquid] init failed', e);
+  if(canvas) canvas.style.display='none';
+}
+if(!gl){
+// graceful no-op: create stubs so rest of script doesn't crash
+// skip fluid simulation entirely
+} else {
 
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
@@ -459,7 +656,7 @@ function update() {
     requestAnimationFrame(update);
 }
 
-canvas.addEventListener('mousemove', e => {
+if(canvas) canvas.addEventListener('mousemove', e => {
     pointers.push({
         x: e.clientX / canvas.width,
         y: 1.0 - e.clientY / canvas.height, 
@@ -469,6 +666,7 @@ canvas.addEventListener('mousemove', e => {
 });
 
 update();
+} // end fluid guard — hero-3d handles its own canvas
 
 
 const cursorDot = document.querySelector("[data-cursor-dot]");
@@ -486,7 +684,7 @@ if (window.matchMedia("(pointer: fine)").matches) {
     cursorOutline.animate({
       left: `${posX}px`,
       top: `${posY}px`
-    }, { duration: 500, fill: "forwards" }); 
+    }, { duration: 180, fill: "forwards" }); 
   }); 
 
   const interactiveElements = document.querySelectorAll("a, button, .nav, .project-card, input, textarea");
