@@ -10,24 +10,24 @@
 
   <!-- Open Graph -->
   <meta property="og:type"        content="website"/>
-  <meta property="og:url"         content="https://ayushshende2679.github.io/"/>
-  <meta property="og:title"       content="Ayush Shende — Software Engineer"/>
+  <meta property="og:url"         content="https://ayushshende2679.github.io/portfolio/"/>
+  <meta property="og:title"       content="Ayush Shende — Software Engineer | Systems • Backend • Mobile"/>
   <meta property="og:description" content="B.Tech CSE (CGPA 8.95). Java • Spring Boot • C++17 • Flutter. Building encrypted backends, DPI engines, and offline-first apps."/>
-  <meta property="og:image"       content="images/ayush-photo.jpg"/>
+  <meta property="og:image"       content="https://ayushshende2679.github.io/portfolio/images/ayush-photo.jpg"/>
   <meta name="twitter:card"       content="summary_large_image"/>
   <meta name="twitter:title"      content="Ayush Shende — Software Engineer"/>
   <meta name="twitter:description" content="B.Tech CSE (CGPA 8.95). Java • Spring Boot • C++17 • Flutter."/>
-  <meta name="twitter:image"      content="images/ayush-photo.jpg"/>
+  <meta name="twitter:image"      content="https://ayushshende2679.github.io/portfolio/images/ayush-photo.jpg"/>
 
   <!-- Favicon (inline SVG as data URI) -->
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23050507'/><text y='72' x='50' text-anchor='middle' font-size='62' font-family='Inter,sans-serif' font-weight='900' fill='%237c7cff'>AS</text></svg>"/>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23080612'/><text y='72' x='50' text-anchor='middle' font-size='62' font-family='Inter,sans-serif' font-weight='900' fill='%23a855f7'>AS</text></svg>"/>
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=7_devboot">
 
   <!-- Three.js global (works on file:// without CORS issues) -->
   <script src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
@@ -35,22 +35,103 @@
 </head>
 <body>
 
-  <!-- ═══════════════════════ PRELOADER ═══════════════════════════ -->
-  <div id="preloader">
-    <div id="loader-particles"></div>
-    <div class="loader-content">
-      <div class="glow-ring"></div>
-      <div class="loader-subtitle mono">AYUSH SHENDE • <span id="loader-pct">0</span>%</div>
+  <!-- Preloader -->
+  <div id="preloader" role="progressbar" aria-label="System Initializing" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+    <div class="loader-backdrop" aria-hidden="true">
+      <div class="loader-grid"></div>
+      <div class="loader-ambient-glow"></div>
+    </div>
+    
+    <div class="loader-terminal-chassis">
+      <!-- Terminal Window Bar -->
+      <div class="loader-terminal-header">
+        <div class="loader-win-controls" aria-hidden="true">
+          <span class="win-btn close"></span>
+          <span class="win-btn min"></span>
+          <span class="win-btn max"></span>
+        </div>
+        <div class="loader-terminal-title mono">
+          <i class="fa-solid fa-terminal" aria-hidden="true"></i> sys_bootstrap.sh — x86_64
+        </div>
+        <div class="loader-terminal-pill mono">
+          <span class="pulse-dot"></span> PID 2679
+        </div>
+      </div>
+
+      <!-- Terminal Body -->
+      <div class="loader-terminal-body mono">
+        <div class="loader-banner">
+          <div class="banner-title">AYUSH SHENDE // SYSTEMS &amp; BACKEND ARCHITECTURE</div>
+          <div class="banner-sub text-muted">KERNEL: Linux 6.8-sys • ARCH: x86_64 • ENVIRONMENT: PROD</div>
+        </div>
+
+        <div class="loader-boot-logs" id="loaderBootLogs">
+          <div class="boot-log-entry visible" id="log1">
+            <span class="log-tag tag-boot">[INIT]</span>
+            <span class="log-text">Mounting runtime: Java 17, Spring Boot 3, C++17</span>
+            <span class="log-status status-ok">[ OK ]</span>
+          </div>
+          <div class="boot-log-entry" id="log2">
+            <span class="log-tag tag-mesh">[NET]</span>
+            <span class="log-text">Initializing UPI Offline Mesh &amp; Packet Engine</span>
+            <span class="log-status status-ok">[ OK ]</span>
+          </div>
+          <div class="boot-log-entry" id="log3">
+            <span class="log-tag tag-sec">[AUTH]</span>
+            <span class="log-text">Verifying cryptographic integrity &amp; ledger</span>
+            <span class="log-status status-ok">[ OK ]</span>
+          </div>
+          <div class="boot-log-entry" id="log4">
+            <span class="log-tag tag-gpu">[GPU]</span>
+            <span class="log-text">Compiling Three.js kinetic shader core</span>
+            <span class="log-status status-ok">[ OK ]</span>
+          </div>
+          <div class="boot-log-entry" id="log5">
+            <span class="log-tag tag-done">[EXEC]</span>
+            <span class="log-text" id="loaderDynamicMsg">Launching interactive developer interface...</span>
+            <span class="boot-cursor" aria-hidden="true">█</span>
+          </div>
+        </div>
+
+        <!-- Telemetry Progress System -->
+        <div class="loader-telemetry-panel">
+          <div class="telemetry-labels">
+            <span class="telemetry-label">SYSTEM_BOOT_PROGRESS</span>
+            <span class="telemetry-val" id="loaderPercent">0%</span>
+          </div>
+          <div class="telemetry-bar-track">
+            <div class="telemetry-bar-fill" id="loaderFill"></div>
+          </div>
+          <div class="telemetry-footer-stats">
+            <span class="stat-chip"><i class="fa-solid fa-microchip"></i> CPU: NOMINAL</span>
+            <span class="stat-chip"><i class="fa-solid fa-memory"></i> MEM: 64MB OK</span>
+            <span class="stat-chip"><i class="fa-solid fa-shield-halved"></i> SEC: ENCRYPTED</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Skip / Interaction prompt -->
+      <div class="loader-skip-hint mono" id="loaderSkipBtn">
+        <span>CLICK OR PRESS ANY KEY TO SKIP</span> <i class="fa-solid fa-chevron-right"></i>
+      </div>
     </div>
   </div>
 
-  <!-- Custom cursor -->
-  <div class="cursor-dot"     data-cursor-dot></div>
-  <div class="cursor-outline" data-cursor-outline></div>
-
-  <!-- Background layers -->
-  <canvas id="stars-canvas" aria-hidden="true" style="position:fixed;inset:0;width:100vw;height:100vh;z-index:-2;pointer-events:none;display:block;"></canvas>
+  <!-- Background WebGL -->
   <canvas id="hero-3d-canvas" aria-hidden="true"></canvas>
+
+  <!-- Custom Cursor & Spotlight -->
+  <div class="cursor-glow" aria-hidden="true"></div>
+  <div class="cursor-developer" aria-hidden="true">
+    <div class="cursor-reticle">
+      <span class="corner tl"></span>
+      <span class="corner tr"></span>
+      <span class="corner bl"></span>
+      <span class="corner br"></span>
+      <span class="crosshair-dot"></span>
+    </div>
+    <div class="cursor-badge mono">&lt;dev/&gt;</div>
+  </div>
 
   <div class="bg-animation">
     <div class="grid-overlay"></div>
@@ -62,7 +143,7 @@
     <img src="images/upi-offline-mesh.png" alt="3D preview fallback" loading="lazy"/>
   </div>
 
-  <!-- ═══════════════════════ NAVBAR ═══════════════════════════════ -->
+  <!-- Navigation -->
   <nav id="navbar" class="nav-hidden">
     <div class="container">
       <a href="#" class="logo" aria-label="Ayush Shende home">AS<span class="logo-dot">_</span></a>
@@ -73,99 +154,108 @@
         <li><a href="#projects"><span class="nav-num">04</span> Projects</a></li>
         <li><a href="#contact"><span class="nav-num">05</span> Contact</a></li>
       </ul>
-      <div class="hamburger" aria-label="menu" role="button" tabindex="0">
+      <button class="hamburger" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="nav-links">
         <span class="bar"></span>
         <span class="bar"></span>
         <span class="bar"></span>
-      </div>
+      </button>
     </div>
   </nav>
 
-  <!-- ═══════════════════════ HERO ═════════════════════════════════ -->
+  <!-- Hero -->
   <section class="hero" id="hero">
     <div class="container hero-grid">
 
-      <!-- LEFT — text content -->
+      <!-- LEFT — Primary Narrative, CTAs & Telemetry -->
       <div class="hero-content">
         <div class="hero-eyebrow">
           <span class="eyebrow-dot"></span>
-          <span class="mono">OPEN TO SDE INTERNSHIPS — 2026–2027</span>
+          <span class="mono">OPEN TO SDE ROLES • SUMMER 2026–2027</span>
           <span class="eyebrow-divider">•</span>
-          <span class="mono muted">JIT Nagpur • CGPA 8.95/10</span>
+          <span class="mono muted">JIT Nagpur • CGPA 8.95</span>
         </div>
 
         <h1 class="hero-title">
-          <span class="hero-greeting mono">hey, I'm</span>
+          <span class="hero-greeting mono">HELLO, WORLD — I'M</span>
           <span class="hero-name">Ayush Shende</span>
-          <span class="hero-role" id="hero-role">Systems &amp; Backend Engineer</span>
+          <div class="hero-role-wrapper">
+            <span class="hero-role-prefix mono">&gt;</span>
+            <span class="hero-role" id="hero-role">Systems &amp; Backend Engineer</span>
+          </div>
         </h1>
 
         <p class="hero-desc">
-          CS undergrad building <strong>encryption-backed backends</strong>,
-          <strong>high-performance C++ engines</strong> and <strong>offline-first mobile apps</strong>.
-          Exploring mesh networks, DPI &amp; scalable systems.
+          CS undergrad building <strong>high-throughput C++ engines</strong>,
+          <strong>cryptographic mesh backends</strong>, and <strong>offline-first systems</strong>.
+          Engineered for idempotency, line-rate packet flow, and test-verified correctness.
         </p>
 
-        <!-- Terminal window -->
-        <div class="hero-terminal">
-          <div class="terminal-header">
-            <div class="terminal-dots"><span></span><span></span><span></span></div>
-            <span class="terminal-title">ayush@portfolio: ~$ whoami</span>
-          </div>
-          <div class="terminal-body mono">
-            <div class="terminal-line"><span class="t-prompt">$</span> cat stack.txt <span class="t-cursor">█</span></div>
-            <div class="terminal-output">Java 17 • Spring Boot 3 • C++17 • Flutter • Kafka • Docker</div>
-            <div class="terminal-line"><span class="t-prompt">$</span> ./run --projects 4 --leetcode 100+ --cgpa 8.95</div>
-            <div class="terminal-output success">✓ All systems operational. Ready to ship.</div>
-          </div>
-        </div>
-
         <div class="cta-buttons">
-          <a href="#projects" class="btn btn-primary"><i class="fa-solid fa-code"></i> View Projects</a>
+          <a href="#projects" class="btn btn-primary"><i class="fa-solid fa-terminal"></i> View Projects</a>
           <a href="Ayush_Shende_Resume.pdf" target="_blank" class="btn btn-secondary" id="resume-btn">
-            <i class="fa-solid fa-file-arrow-down"></i> Resume
+            <i class="fa-solid fa-file-lines"></i> Resume.pdf
           </a>
         </div>
 
         <div class="hero-stats">
-          <div class="stat"><span class="stat-num">4</span><span class="stat-label mono">Production Projects</span></div>
-          <div class="stat"><span class="stat-num">100+</span><span class="stat-label mono">LeetCode</span></div>
-          <div class="stat"><span class="stat-num">8.95</span><span class="stat-label mono">CGPA</span></div>
-          <div class="stat"><span class="stat-num">3</span><span class="stat-label mono">Live Demos</span></div>
+          <div class="stat"><span class="stat-num">4</span><span class="stat-label mono">Production Systems</span></div>
+          <div class="stat"><span class="stat-num">100+</span><span class="stat-label mono">LeetCode Solved</span></div>
+          <div class="stat"><span class="stat-num">8.95</span><span class="stat-label mono">CGPA (JIT)</span></div>
+          <div class="stat"><span class="stat-num">100%</span><span class="stat-label mono">Test Verified</span></div>
         </div>
       </div>
 
-      <!-- RIGHT — clean avatar, no clutter -->
+      <!-- RIGHT — Systems HUD, Identity & Interactive Terminal -->
       <div class="hero-visual">
-        <div class="avatar-scene">
+        <div class="hero-hud-card">
+          <div class="hud-profile-strip">
+            <div class="hud-avatar">
+              <img src="images/ayush-photo.jpg" alt="Ayush Shende — Systems &amp; Backend Engineer" loading="eager"/>
+              <span class="hud-status-dot" title="Active &amp; Available"></span>
+            </div>
+            <div class="hud-identity">
+              <div class="hud-name">Ayush Shende</div>
+              <div class="hud-title mono">Systems &amp; Backend Engineer</div>
+            </div>
+            <div class="hud-badge mono">B.Tech CSE '28</div>
+          </div>
 
-          <!-- Glow rings (CSS only, no JS needed) -->
-          <div class="avatar-orbit orbit-1"></div>
-          <div class="avatar-orbit orbit-2"></div>
-          <div class="avatar-orbit orbit-3"></div>
-
-          <!-- Photo -->
-          <div class="avatar-frame">
-            <div class="avatar-ring">
-              <div class="avatar-inner">
-                <img src="images/ayush-photo.jpg" alt="Ayush Shende — Software Engineer" loading="eager"/>
+          <!-- Terminal window (Interactive SaaS CLI) -->
+          <div class="hero-terminal" role="region" aria-label="Interactive Systems Terminal">
+            <div class="terminal-header">
+              <div class="terminal-dots"><span></span><span></span><span></span></div>
+              <div class="terminal-tabs" role="tablist" aria-label="Terminal Commands">
+                <button class="t-tab active" role="tab" aria-selected="true" data-cmd="stack">stack.txt</button>
+                <button class="t-tab" role="tab" aria-selected="false" data-cmd="benchmark">benchmark.sh</button>
+                <button class="t-tab" role="tab" aria-selected="false" data-cmd="mesh">mesh_status</button>
               </div>
+              <span class="terminal-title mono">ayush@sys:~$</span>
+            </div>
+            <div class="terminal-body mono" id="terminal-body">
+              <div class="terminal-line"><span class="t-prompt">$</span> <span id="t-cmd-text">cat stack.txt</span> <span class="t-cursor">█</span></div>
+              <div class="terminal-output" id="t-cmd-output">Java 17 • Spring Boot 3 • C++17 • Flutter • Kafka • Docker</div>
+              <div class="terminal-line alt"><span class="t-prompt">$</span> ./verify --all-tests</div>
+              <div class="terminal-output success">✓ 100% test coverage on transactional ledger &amp; PCAP engine</div>
             </div>
           </div>
 
-
-        </div> <!-- .avatar-scene -->
-      </div> <!-- .hero-visual -->
+          <div class="hud-telemetry mono">
+            <span class="hud-telemetry-item"><i class="fa-solid fa-microchip"></i> C++17 / Java 17</span>
+            <span class="hud-telemetry-item"><i class="fa-solid fa-network-wired"></i> Kafka / BLE Mesh</span>
+            <span class="hud-telemetry-item live"><i class="fa-solid fa-cube"></i> 3D Core Active</span>
+          </div>
+        </div>
+      </div>
     </div> <!-- .hero-grid -->
 
-    <!-- Scroll Indicator positioned at bottom center of the entire hero section -->
+    <!-- Scroll Indicator -->
     <div class="scroll-indicator">
       <span class="mono">SCROLL</span>
       <div class="scroll-line"></div>
     </div>
   </section>
 
-  <!-- ═══════════════════════ ABOUT ════════════════════════════════ -->
+  <!-- About -->
   <section class="section" id="about">
     <div class="container">
       <div class="section-header">
@@ -209,7 +299,7 @@
     </div>
   </section>
 
-  <!-- ═══════════════════════ EXPERIENCE ═══════════════════════════ -->
+  <!-- Experience -->
   <section class="section" id="experience">
     <div class="container">
       <div class="section-header">
@@ -269,7 +359,7 @@
     </div>
   </section>
 
-  <!-- ═══════════════════════ SKILLS ═══════════════════════════════ -->
+  <!-- Skills -->
   <section class="section" id="skills">
     <div class="container">
       <div class="section-header">
@@ -310,7 +400,7 @@
     </div>
   </section>
 
-  <!-- ═══════════════════════ PROJECTS ═════════════════════════════ -->
+  <!-- Projects -->
   <section class="section" id="projects">
     <div class="container">
       <div class="section-header">
@@ -419,14 +509,14 @@
             <img src="images/splitmate5.png.jpeg" class="carousel-image hidden" alt="Splitmate Analytics"/>
             <img src="images/splitmate6.png.jpeg" class="carousel-image hidden" alt="Splitmate PDF"/>
           </div>
-          <button class="nav next" aria-label="next">›</button>
-          <div class="carousel-dots">
-            <div class="dot active" data-index="0"></div>
-            <div class="dot" data-index="1"></div>
-            <div class="dot" data-index="2"></div>
-            <div class="dot" data-index="3"></div>
-            <div class="dot" data-index="4"></div>
-            <div class="dot" data-index="5"></div>
+          <button class="nav next" aria-label="Next slide">›</button>
+          <div class="carousel-dots" role="tablist" aria-label="Splitmate preview slides">
+            <button class="dot active" role="tab" aria-selected="true" aria-label="Slide 1: Splitmate Home" data-index="0"></button>
+            <button class="dot" role="tab" aria-selected="false" aria-label="Slide 2: Splitmate Groups" data-index="1"></button>
+            <button class="dot" role="tab" aria-selected="false" aria-label="Slide 3: Splitmate Reports" data-index="2"></button>
+            <button class="dot" role="tab" aria-selected="false" aria-label="Slide 4: Splitmate Budget" data-index="3"></button>
+            <button class="dot" role="tab" aria-selected="false" aria-label="Slide 5: Splitmate Analytics" data-index="4"></button>
+            <button class="dot" role="tab" aria-selected="false" aria-label="Slide 6: Splitmate PDF" data-index="5"></button>
           </div>
         </div>
       </div>
@@ -499,7 +589,7 @@
     </div>
   </section>
 
-  <!-- ═══════════════════════ CONTACT ══════════════════════════════ -->
+  <!-- Contact -->
   <section class="section contact-section" id="contact">
     <div class="container">
       <div class="section-header">
@@ -533,54 +623,58 @@
           <span class="card-cta mono">View →</span>
         </a>
       </div>
-      <div class="contact-terminal mono">
-        <span class="t-prompt">ayush@portfolio:~$</span> echo "Open to SDE Intern • Backend • Systems • Mobile" <span class="t-cursor">█</span>
-      </div>
     </div>
   </section>
 
-  <!-- ═══════════════════════ FOOTER ═══════════════════════════════ -->
-  <footer class="main-footer">
+  <!-- Footer -->
+  <footer class="main-footer" role="contentinfo">
     <div class="container">
-      <div class="footer-content">
-        <div class="footer-logo">AS<span class="logo-dot">_</span></div>
-        <div class="footer-meta mono">
-          <span>JIT Nagpur • CSE 2028 • CGPA 8.95</span>
-          <span>Java • Spring Boot • C++17 • Flutter • Kafka • Docker</span>
+      <div class="footer-unified">
+        <!-- Left: Brand & Live Availability Status -->
+        <div class="footer-brand">
+          <a href="#" class="footer-logo" aria-label="Ayush Shende Home">AS<span class="logo-dot">_</span></a>
+          <span class="footer-status mono">
+            <span class="status-pulse"></span>
+            Open to SDE Roles • Summer 2026–2027
+          </span>
         </div>
-        <div class="footer-socials">
-          <a href="https://github.com/AyushShende2679" target="_blank" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
-          <a href="https://www.linkedin.com/in/ayush-shende-874b70292" target="_blank" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
-          <a href="mailto:ayushshende2679@gmail.com" aria-label="Email"><i class="fa-solid fa-envelope"></i></a>
-          <a href="https://leetcode.com/u/uQUtgCde87" target="_blank" aria-label="LeetCode"><i class="fa-solid fa-code"></i></a>
+
+        <!-- Center: Systems Philosophy & Colophon -->
+        <div class="footer-center mono">
+          <p>© 2026 Ayush Shende. Built with systems thinking • Verified by tests.</p>
+          <span class="footer-meta-pill">Java 17 • Spring Boot • C++17 • Kafka • WebGL</span>
         </div>
-      </div>
-      <div class="footer-bottom mono">
-        <p>© 2026 Ayush Shende. Crafted with <span style="color:#e25555;">♥</span> • Systems thinking • Ship fast, verify with tests.</p>
-        <p class="foot-sub">Three.js 3D • Galaxy particles • WebGL • DPR-aware</p>
+
+        <!-- Right: Social Links -->
+        <div class="footer-socials" aria-label="Social profiles">
+          <a href="https://github.com/AyushShende2679" target="_blank" rel="noopener noreferrer" aria-label="GitHub Profile"><i class="fa-brands fa-github"></i></a>
+          <a href="https://www.linkedin.com/in/ayush-shende-874b70292" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn Profile"><i class="fa-brands fa-linkedin-in"></i></a>
+          <a href="mailto:ayushshende2679@gmail.com" aria-label="Send an Email"><i class="fa-solid fa-envelope"></i></a>
+          <a href="https://leetcode.com/u/uQUtgCde87" target="_blank" rel="noopener noreferrer" aria-label="LeetCode Profile"><i class="fa-solid fa-code"></i></a>
+        </div>
       </div>
     </div>
   </footer>
 
-  <!-- ═══════════════════════ AI WIDGET ════════════════════════════ -->
-  <div id="ai-widget" class="ai-widget" aria-live="polite">
-    <button id="ai-toggle" class="ai-toggle" aria-label="Ask Ayush AI">
+  <!-- Local AI Assistant -->
+  <aside id="ai-widget" class="ai-widget" aria-label="Ayush AI Assistant">
+    <button id="ai-toggle" class="ai-toggle" aria-label="Open Ask Ayush AI assistant" aria-haspopup="dialog">
       <span class="ai-toggle-icon"><i class="fa-solid fa-robot"></i></span>
       <span class="ai-toggle-text mono">Ask Ayush AI</span>
       <span class="ai-toggle-dot"></span>
     </button>
-    <div id="ai-panel" class="ai-panel" hidden>
+    <div id="ai-panel" class="ai-panel" role="dialog" aria-labelledby="ai-title" aria-modal="true" hidden>
       <div class="ai-header">
         <div class="ai-header-left">
           <div class="ai-avatar">AS</div>
           <div>
-            <strong>Ayush AI</strong>
+            <strong id="ai-title">Ayush AI</strong>
             <span class="mono">Knows everything about me • No API • Local</span>
           </div>
         </div>
-        <button id="ai-close" class="ai-close" aria-label="close"><i class="fa-solid fa-xmark"></i></button>
+        <button id="ai-close" class="ai-close" aria-label="Close Ayush AI assistant"><i class="fa-solid fa-xmark"></i></button>
       </div>
-      <div id="ai-messages" class="ai-messages">
+      <div id="ai-messages" class="ai-messages" role="log" aria-live="polite">
         <div class="ai-msg ai-msg-bot">
           <span class="ai-msg-avatar">AI</span>
           <div class="ai-msg-bubble">
@@ -588,26 +682,25 @@
           </div>
         </div>
       </div>
-      <div class="ai-suggestions mono">
-        <button data-q="Tell me about UPI Offline Mesh">UPI Mesh</button>
-        <button data-q="What is DPI Engine?">DPI Engine</button>
-        <button data-q="What are your skills?">Skills</button>
-        <button data-q="Tell me about your experience">Experience</button>
-        <button data-q="How to contact Ayush?">Contact</button>
+      <div class="ai-suggestions mono" role="group" aria-label="Suggested quick queries">
+        <button type="button" data-q="Tell me about UPI Offline Mesh">UPI Mesh</button>
+        <button type="button" data-q="What is DPI Engine?">DPI Engine</button>
+        <button type="button" data-q="What are your skills?">Skills</button>
+        <button type="button" data-q="Tell me about your experience">Experience</button>
+        <button type="button" data-q="How to contact Ayush?">Contact</button>
       </div>
       <div class="ai-input-row">
-        <input id="ai-input" class="ai-input mono" placeholder="Ask about Ayush — e.g., 'CGPA?', 'Flutter projects?'" autocomplete="off"/>
-        <button id="ai-send" class="ai-send"><i class="fa-solid fa-paper-plane"></i></button>
+        <input id="ai-input" class="ai-input mono" placeholder="Ask about Ayush — e.g., 'CGPA?', 'Flutter projects?'" autocomplete="off" aria-label="Message to Ayush AI"/>
+        <button id="ai-send" class="ai-send" aria-label="Send message"><i class="fa-solid fa-paper-plane"></i></button>
       </div>
       <div class="ai-footer mono">Predefined • Offline • Answers only about Ayush</div>
     </div>
-  </div>
+  </aside>
 
   <!-- Scripts -->
-  <script src="js/stars-background.js?v=2" defer></script>
-  <script src="js/hero-3d.js?v=2" defer></script>
-  <script src="js/ai-widget.js?v=2"></script>
-  <script src="script.js?v=2" defer></script>
+  <script src="js/hero-3d.js?v=5_purple" defer></script>
+  <script src="js/ai-widget.js?v=5_purple" defer></script>
+  <script src="script.js?v=7_devboot" defer></script>
 
 </body>
 </html>

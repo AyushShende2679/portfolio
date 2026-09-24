@@ -21,7 +21,7 @@ A highly interactive, spatial, and weightless personal portfolio built using **H
 - **Local AI Assistant:** An entirely client-side, offline "Ayush AI" chatbot that knows all about the projects, skills, and experience listed in the portfolio without needing any API calls.
 - **Hardware-Accelerated Animations:** Buttery-smooth 60fps animations utilizing `requestAnimationFrame`, CSS 3D transforms, and passive event listeners.
 - **Responsive Layout:** Perfectly scales from 4K desktop displays down to mobile devices, automatically adjusting 3D rendering parameters (DPR, particle count) for mobile performance.
-- **Dynamic Preloader:** A lightweight, pure CSS glowing ring loader that guarantees a fast First Contentful Paint.
+- **System Bootloader & Developer Cursor:** A terminal-style system initialization sequence and interactive custom developer HUD cursor with context-aware telemetry feedback.
 
 ---
 
